@@ -1,0 +1,35 @@
+package com.application.template.service.message.smsMessageService;
+
+import com.application.template.config.applicationProps.SmsMessageConfigProps;
+import com.application.template.constant.ExternalServiceAddress;
+import com.application.template.entity.appUser.auth.RegisterBody;
+import com.application.template.exceptionHandle.AppAssert;
+import com.application.template.exceptionHandle.exception.AppException;
+import com.application.template.util.HttpUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
+
+@Service("smsMessageServiceImpl")
+public class SmsMessageServiceImpl implements SmsMessageService {
+
+    @Autowired
+    private SmsMessageConfigProps smsMessageConfigProps;
+
+    @Override
+    public String sendCaptchaMessage(RegisterBody registerBody, String smsText) {
+        AppAssert.judge(!StringUtils.hasText(registerBody.getPhoneNumber()),new AppException("请先填写电话!"));
+        Map<String, Object> params = new HashMap<>();
+        params.put("Key", smsMessageConfigProps.getKey());
+        params.put("Uid", smsMessageConfigProps.getUid());
+        params.put("smsMob", registerBody.getPhoneNumber());
+        String captcha = String.valueOf(new Random().nextInt(999999) % (999999 - 100000 + 1) + 100000);
+        params.put("smsText", smsText + captcha);
+        HttpUtil.httpGetWithParams(ExternalServiceAddress.SMS_MESSAGE_HOST, params);
+        return captcha;
+    }
+}

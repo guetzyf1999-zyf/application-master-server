@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "<http://mybatis.org/dtd/mybatis-3-mapper.dtd>">
+<mapper namespace="com.application.template.mapper.appUser.AppUserMapper">
+    <select id="findUserById" resultType="com.application.template.entity.appUser.AppUser">
+        select * from app_user
+        <where>
+            id = #{id};
+        </where>
+    </select>
+
+    <select id="findIdByTelephone" resultType="Integer">
+        select id from app_user
+        <where>
+            telephone = #{telephone};
+        </where>
+    </select>
+
+    <select id="findIdByUsername" resultType="Integer">
+        select id from app_user
+        <where>
+            username = #{username};
+        </where>
+    </select>
+
+    <select id="findUserByUsername" resultType="com.application.template.entity.appUser.AppUser">
+        select * from app_user
+        <where>
+            username = #{username};
+        </where>
+    </select>
+</mapper>
