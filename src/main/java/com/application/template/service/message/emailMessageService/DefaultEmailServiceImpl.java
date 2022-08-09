@@ -1,5 +1,6 @@
 package com.application.template.service.message.emailMessageService;
 
+import com.application.template.aspectJ.annotation.TimeCount;
 import com.application.template.entity.appUser.auth.RegisterBody;
 import com.application.template.exceptionHandle.AppAssert;
 import com.application.template.exceptionHandle.exception.AppException;
@@ -24,6 +25,7 @@ public class DefaultEmailServiceImpl implements EmailMessageService {
     private long effectiveTime;
 
     @Override
+    @TimeCount(name = "sendCaptchaMessage")
     public String sendCaptchaMessage(RegisterBody registerBody, String text) {
         AppAssert.judge(!StringUtils.hasText(registerBody.getEmail()),new AppException("请先填写邮箱!"));
         String captcha = String.valueOf(new Random().nextInt(999999) % (999999 - 100000 + 1) + 100000);

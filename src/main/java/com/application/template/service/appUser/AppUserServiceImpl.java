@@ -2,6 +2,7 @@ package com.application.template.service.appUser;
 
 import java.util.Date;
 
+import com.application.template.aspectJ.annotation.TimeCount;
 import com.application.template.entity.appUser.auth.JwtAuthResponseBody;
 import com.application.template.service.authService.JwtService;
 import org.slf4j.Logger;
@@ -65,6 +66,7 @@ public class AppUserServiceImpl implements AppUserService {
 	}
 
 	@Override
+	@TimeCount(name = "getCaptchaCode")
 	public CaptchaAuthDTO getCaptchaCode(RegisterBody registerBody) {
 		MessageConfigProps messageConfigProps = SpringUtil.getBean(MessageConfigProps.class);
 		MessageSendingApproach approach = MessageSendingApproach.valueOf(messageConfigProps.getCaptchasendingpath());
