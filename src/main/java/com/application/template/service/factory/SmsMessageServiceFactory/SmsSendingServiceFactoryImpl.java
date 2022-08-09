@@ -1,4 +1,4 @@
-package com.application.template.service.factory;
+package com.application.template.service.factory.SmsMessageServiceFactory;
 
 import org.springframework.stereotype.Service;
 

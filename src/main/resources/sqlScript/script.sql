@@ -15,7 +15,7 @@ alter sequence username_seq restart with 6000;
 create table app_user
 (
     id                      int4 primary key default nextval('application_seq'::regclass),
-    username                varchar(255) unique,
+    username                varchar(255) unique default nextval('username_seq'::regclass),
     password                varchar(255),
     nick_name               varchar(255),
     email                   varchar(255),

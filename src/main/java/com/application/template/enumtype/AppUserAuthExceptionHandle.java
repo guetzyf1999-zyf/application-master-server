@@ -10,7 +10,8 @@ public enum AppUserAuthExceptionHandle {
     CREDENTIALS_EXPIRED("用户密码已过期", 1, CredentialsExpiredException.class),
     DISABLE("该账户已被禁用", 1, DisabledException.class),
     BAD_CREDENTIALS("账号密码错误", 1, BadCredentialsException.class),
-    ACCOUNT_EXPIRED("账户已过期", 5,AccountExpiredException .class);
+    ACCOUNT_EXPIRED("账户已过期", 5,AccountExpiredException .class),
+    EMPTY_USER("未找到该用户", 5,InternalAuthenticationServiceException .class);
 
     private final String message;
     private final int index;

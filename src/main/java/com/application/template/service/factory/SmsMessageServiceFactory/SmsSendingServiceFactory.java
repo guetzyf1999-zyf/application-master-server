@@ -1,7 +1,8 @@
-package com.application.template.service.factory;
+package com.application.template.service.factory.SmsMessageServiceFactory;
 
 import com.application.template.config.applicationProps.SmsMessageServiceConfigProps;
 import com.application.template.enumtype.SmsApproach;
+import com.application.template.service.factory.MessageSendingServiceFactory;
 import com.application.template.service.message.MessageService;
 import com.application.template.util.SpringUtil;
 

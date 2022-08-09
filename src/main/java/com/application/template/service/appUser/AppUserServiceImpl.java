@@ -45,9 +45,11 @@ public class AppUserServiceImpl implements AppUserService {
 	@Override
 	public void login(AuthBody authBody) {
 		try {
-			UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(authBody.getUsername(),
+			UsernamePasswordAuthenticationToken authenticationTokentoken = new UsernamePasswordAuthenticationToken(authBody.getUsername(),
 					authBody.getPassword());
-			Authentication authenticate = SpringUtil.getBean(AuthenticationManager.class).authenticate(token);
+			Authentication authenticate = SpringUtil.getBean(AuthenticationManager.class).authenticate(authenticationTokentoken);
+			AppUser user = (AppUser) authenticate.getPrincipal();
+			user.setEmail(userMapper.findEmailByUsername(user.getUsername()));
 			SecurityContextHolder.getContext().setAuthentication(authenticate);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -72,6 +74,7 @@ public class AppUserServiceImpl implements AppUserService {
 		checkUserInfoLegal(registerBody);
 		AppUser user = createAppUser(registerBody);
 		userMapper.insert(user);
+		user.setUsername(userMapper.findUsernameByEmail(user.getEmail()));
 		logger.info("新用户注册成功{}", registerBody.getNickname() + registerBody.getPhoneNumber());
 		return user;
 	}
@@ -97,7 +100,7 @@ public class AppUserServiceImpl implements AppUserService {
 	}
 
 	private void checkUserInfoLegal(RegisterBody registerBody) {
-		boolean emailHasBeenUsed = userMapper.findIdByUsername(registerBody.getEmail()) != null;
+		boolean emailHasBeenUsed = userMapper.findIdByEmail(registerBody.getEmail()) != null;
 		AppAssert.judge(emailHasBeenUsed, new AppUserException("该邮箱已被注册"));
 		boolean phoneHasBeenUsed = userMapper.findIdByTelephone(registerBody.getPhoneNumber()) != null;
 		AppAssert.judge(phoneHasBeenUsed, new AppUserException("该电话已被注册"));

@@ -15,17 +15,10 @@
         </where>
     </select>
 
-    <select id="findIdByUsername" resultType="Integer">
+    <select id="findIdByEmail" resultType="Integer">
         select id from app_user
         <where>
-            username = #{username};
-        </where>
-    </select>
-
-    <select id="findUserByUsername" resultType="com.application.template.entity.appUser.AppUser">
-        select * from app_user
-        <where>
-            username = #{username};
+            email = #{email};
         </where>
     </select>
 </mapper>

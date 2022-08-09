@@ -1,6 +1,8 @@
 package com.application.template.enumtype;
 
 import com.application.template.service.factory.*;
+import com.application.template.service.factory.SmsMessageServiceFactory.SmsSendingServiceFactoryImpl;
+import com.application.template.service.factory.emailMessageServiceFactory.EmailSendingServiceFactoryImpl;
 
 //验证码发送途径
 public enum MessageSendingApproach {

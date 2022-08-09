@@ -2,7 +2,6 @@ package com.application.template.config.springSecurity;
 
 import com.application.template.service.appUser.AppUserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -25,26 +24,21 @@ import java.util.Collections;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
 
-    private static final String[] DISABLE_AUTH = new String[]{"/app/user/login",
-            "/app/user/get-captcha-by-telephone","/app/user/register" ,"/app/test/**"};
+    private static final String[] DISABLE_AUTH = new String[]{"/app/user/**" ,"/app/test/**"};
 
     @Autowired
     private AppUserService appUserService;
 
-    @Value("${jwtauth.unauthpath}")
-    private String unAuthPath;
-
     @Bean
-    public SecurityFilterChain genSecurityFilterChain(HttpSecurity security) throws Exception  {
-		security.cors();
-		security.headers().cacheControl();
-        String[] paths = unAuthPath.split(",");
+    public SecurityFilterChain genSecurityFilterChain(HttpSecurity security) throws Exception {
+        security.cors();
+        security.headers().cacheControl();
         security.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-		return security.antMatcher("/**").csrf().disable()
-				.authorizeRequests(
-						authorize -> authorize.antMatchers(DISABLE_AUTH).permitAll().anyRequest().authenticated())
-				.httpBasic().disable().formLogin().disable().build();
-	}
+        return security.antMatcher("/**").csrf().disable()
+                .authorizeRequests(
+                        authorize -> authorize.antMatchers(DISABLE_AUTH).permitAll().anyRequest().authenticated())
+                .httpBasic().disable().formLogin().disable().build();
+    }
 
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
