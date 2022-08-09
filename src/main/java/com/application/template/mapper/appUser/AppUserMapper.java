@@ -22,6 +22,9 @@ public interface AppUserMapper extends BaseMapper<AppUser> {
     @Select(value = "select * from app_user where username = #{username}")
     AppUser findUserByUsername(String username);
 
+    @Select(value = "select * from app_user where email = #{email}")
+    AppUser findUserByEmail(String email);
+
     @Select(value = "select username from app_user where email = #{email}")
     String findUsernameByEmail(String email);
 }

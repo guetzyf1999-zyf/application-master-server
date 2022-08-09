@@ -3,6 +3,7 @@ package com.application.template.controller.appUser;
 import com.application.template.entity.appUser.AppUser;
 import com.application.template.entity.appUser.auth.AuthBody;
 import com.application.template.entity.appUser.auth.CaptchaAuthDTO;
+import com.application.template.entity.appUser.auth.JwtAuthResponseBody;
 import com.application.template.entity.appUser.auth.RegisterBody;
 import com.application.template.service.appUser.AppUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +18,8 @@ public class AppUserController {
 
 
     @PostMapping("login")
-    public void login(@RequestBody AuthBody authBody) {
-        appUserService.login(authBody);
+    public JwtAuthResponseBody login(@RequestBody AuthBody authBody) {
+        return appUserService.login(authBody);
     }
 
     @PostMapping("get-captcha-code")

@@ -2,6 +2,8 @@ package com.application.template.service.appUser;
 
 import java.util.Date;
 
+import com.application.template.entity.appUser.auth.JwtAuthResponseBody;
+import com.application.template.service.authService.JwtService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,8 +44,11 @@ public class AppUserServiceImpl implements AppUserService {
 	@Autowired
 	private AppUserMapper userMapper;
 
+	@Autowired
+	private JwtService jwtService;
+
 	@Override
-	public void login(AuthBody authBody) {
+	public JwtAuthResponseBody login(AuthBody authBody) {
 		try {
 			UsernamePasswordAuthenticationToken authenticationTokentoken = new UsernamePasswordAuthenticationToken(authBody.getUsername(),
 					authBody.getPassword());
@@ -51,10 +56,10 @@ public class AppUserServiceImpl implements AppUserService {
 			AppUser user = (AppUser) authenticate.getPrincipal();
 			user.setEmail(userMapper.findEmailByUsername(user.getUsername()));
 			SecurityContextHolder.getContext().setAuthentication(authenticate);
-		} catch (Exception e) {
-			e.printStackTrace();
-			String handleMessage = AppUserAuthExceptionHandle.getHandleMessage(e.getClass());
-			logger.info(handleMessage);
+			String jwtToken = jwtService.sing(user.getUsername(), user.getTelephone());
+			return new JwtAuthResponseBody(user, jwtToken);
+		} catch (Exception exception) {
+			String handleMessage = handleAuthUserException(exception);
 			throw new AppUserException(handleMessage);
 		}
 	}
@@ -80,8 +85,9 @@ public class AppUserServiceImpl implements AppUserService {
 	}
 
 	@Override
-	public UserDetails loadUserByUsername(String username) {
-		return userMapper.findUserByUsername(username);
+	public UserDetails loadUserByUsername(String usernameOrEmail) {
+		AppUser user = userMapper.findUserByUsername(usernameOrEmail);
+		return user != null ? user : userMapper.findUserByEmail(usernameOrEmail);
 	}
 
 	private AppUser createAppUser(RegisterBody registerBody) {
@@ -109,5 +115,12 @@ public class AppUserServiceImpl implements AppUserService {
 	private String genMessageTemplate() {
 		long minutes = effectiveTime / 1000;
 		return messageTemplate + minutes + "秒: ";
+	}
+
+	private String handleAuthUserException(Exception exception) {
+		exception.printStackTrace();
+		String handleMessage = AppUserAuthExceptionHandle.getHandleMessage(exception.getClass());
+		logger.info(handleMessage);
+		return handleMessage;
 	}
 }
