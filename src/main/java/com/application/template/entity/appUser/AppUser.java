@@ -18,6 +18,7 @@ public class AppUser implements UserDetails {
     private String nickName;
     private String password;
     private String telephone;
+    private String email;
     private Date registerDate;
     // 表示判断账户是否过期
     private boolean accountNonExpired;
@@ -121,5 +122,13 @@ public class AppUser implements UserDetails {
 
     public void setRegisterDate(Date registerDate) {
         this.registerDate = registerDate;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

@@ -88,7 +88,7 @@ public class AppUserServiceImpl implements AppUserService {
 		user.setNickName(registerBody.getNickname());
 		user.setTelephone(registerBody.getPhoneNumber());
 		user.setRegisterDate(new Date());
-		user.setUsername(registerBody.getEmail());
+		user.setEmail(registerBody.getEmail());
 		user.setAccountNonExpired(true);
 		user.setAccountNonLocked(true);
 		user.setCredentialsNonExpired(true);

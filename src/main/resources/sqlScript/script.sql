@@ -5,6 +5,12 @@ create sequence application_seq;
 -- 重置应用全局序列化数字!慎用
 alter sequence application_seq restart with 1;
 
+--创建用户账户数据库序列
+create sequence username_seq;
+
+-- 用户账户从6000 四位数开始
+alter sequence username_seq restart with 6000;
+
 -- 用户表
 create table app_user
 (
@@ -12,6 +18,7 @@ create table app_user
     username                varchar(255) unique,
     password                varchar(255),
     nick_name               varchar(255),
+    email                   varchar(255),
     telephone               varchar(255) unique,
     register_date           date,
     account_non_expired     boolean          default false,
