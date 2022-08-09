@@ -21,7 +21,7 @@ public class AppUserController {
         appUserService.login(authBody);
     }
 
-    @PostMapping("get-captcha-by-telephone")
+    @PostMapping("get-captcha-code")
     public CaptchaAuthDTO getCaptchaCode(@RequestBody RegisterBody registerBody) {
         return appUserService.getCaptchaCode(registerBody);
     }
