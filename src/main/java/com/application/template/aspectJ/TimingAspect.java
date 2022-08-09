@@ -55,9 +55,7 @@ public class TimingAspect {
             logger.info("计时方法结束:{}, 当前系统时间:{}, 总用时:{}", countName, after, runningCost);
             timeMap.remove(countName);
         }finally {
-            if (timeMap.size() == 0) {
-                START_TIME.remove();
-            }
+            if (timeMap.isEmpty()) START_TIME.remove();
         }
     }
 
