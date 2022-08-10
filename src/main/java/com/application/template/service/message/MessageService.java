@@ -1,7 +1,7 @@
 package com.application.template.service.message;
 
-import com.application.template.entity.appUser.auth.RegisterBody;
+import com.application.template.entity.appUser.auth.CaptchaAuthAccessWay;
 
 public interface MessageService {
-    String sendCaptchaMessage(RegisterBody registerBody, String text);
+    void sendCaptchaMessage(CaptchaAuthAccessWay accessWay, String text, String captcha);
 }

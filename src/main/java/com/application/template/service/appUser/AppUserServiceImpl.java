@@ -1,9 +1,10 @@
 package com.application.template.service.appUser;
 
 import java.util.Date;
+import java.util.Random;
 
 import com.application.template.aspectJ.annotation.TimeCount;
-import com.application.template.entity.appUser.auth.JwtAuthResponseBody;
+import com.application.template.entity.appUser.auth.*;
 import com.application.template.service.authService.JwtService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,9 +20,6 @@ import org.springframework.stereotype.Service;
 
 import com.application.template.config.applicationProps.MessageConfigProps;
 import com.application.template.entity.appUser.AppUser;
-import com.application.template.entity.appUser.auth.AuthBody;
-import com.application.template.entity.appUser.auth.CaptchaAuthDTO;
-import com.application.template.entity.appUser.auth.RegisterBody;
 import com.application.template.enumtype.AppUserAuthExceptionHandle;
 import com.application.template.enumtype.MessageSendingApproach;
 import com.application.template.exceptionHandle.AppAssert;
@@ -67,12 +65,12 @@ public class AppUserServiceImpl implements AppUserService {
 
 	@Override
 	@TimeCount(name = "getCaptchaCode")
-	public CaptchaAuthDTO getCaptchaCode(RegisterBody registerBody) {
-		MessageConfigProps messageConfigProps = SpringUtil.getBean(MessageConfigProps.class);
-		MessageSendingApproach approach = MessageSendingApproach.valueOf(messageConfigProps.getCaptchasendingpath());
+	public CaptchaAuthDTO getCaptchaCode(CaptchaAuthAccessWay accessWay) {
+		MessageSendingApproach approach = MessageSendingApproach.valueOf(accessWay.getAuthWay());
 		MessageSendingServiceFactory serviceFactory = SpringUtil.getBean(approach.getMessageServiceFactoryClass());
 		MessageService messageService = serviceFactory.getMessageService();
-		String captcha = messageService.sendCaptchaMessage(registerBody, genMessageTemplate());
+		String captcha = String.valueOf(new Random().nextInt(999999) % (999999 - 100000 + 1) + 100000);
+		messageService.sendCaptchaMessage(accessWay, genMessageTemplate(), captcha);
 		return new CaptchaAuthDTO(captcha, effectiveTime);
 	}
 
