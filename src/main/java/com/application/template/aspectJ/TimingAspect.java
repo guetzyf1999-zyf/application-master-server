@@ -42,9 +42,10 @@ public class TimingAspect {
 
     private void setCountStartTime(String countName) {
         Map<String, Long> timeMap = START_TIME.get();
-        timeMap = timeMap != null ? timeMap : new HashMap<>();
+        boolean hasTimeMap = timeMap != null;
+        timeMap = hasTimeMap ? timeMap : new HashMap<>();
         timeMap.put(countName, System.currentTimeMillis());
-        START_TIME.set(timeMap);
+        if (!hasTimeMap) START_TIME.set(timeMap);
     }
 
     private void getEndTimeAndRemove(String countName, long after) {
