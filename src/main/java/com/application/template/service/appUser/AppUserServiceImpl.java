@@ -49,9 +49,9 @@ public class AppUserServiceImpl implements AppUserService {
 	@Override
 	public JwtAuthResponseBody login(AuthBody authBody) {
 		try {
-			UsernamePasswordAuthenticationToken authenticationTokentoken = new UsernamePasswordAuthenticationToken(authBody.getUsername(),
+			UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(authBody.getUsername(),
 					authBody.getPassword());
-			Authentication authenticate = SpringUtil.getBean(AuthenticationManager.class).authenticate(authenticationTokentoken);
+			Authentication authenticate = SpringUtil.getBean(AuthenticationManager.class).authenticate(authenticationToken);
 			AppUser user = (AppUser) authenticate.getPrincipal();
 			user.setEmail(userMapper.findEmailByUsername(user.getUsername()));
 			SecurityContextHolder.getContext().setAuthentication(authenticate);
