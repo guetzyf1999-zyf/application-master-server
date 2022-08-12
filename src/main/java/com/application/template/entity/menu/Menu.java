@@ -10,11 +10,10 @@ import java.util.List;
 public class Menu {
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
-    private int level;
     private String title;
     private String icon;
-    private boolean disabled;    private String routeUrl;
-    private List<Menu> children;
+    private boolean disabled;
+    private String routeUrl;
 
     public Integer getId() {
         return id;
@@ -22,14 +21,6 @@ public class Menu {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public int getLevel() {
-        return level;
-    }
-
-    public void setLevel(int level) {
-        this.level = level;
     }
 
     public String getTitle() {
@@ -62,13 +53,5 @@ public class Menu {
 
     public void setRouteUrl(String routeUrl) {
         this.routeUrl = routeUrl;
-    }
-
-    public List<Menu> getChildren() {
-        return children;
-    }
-
-    public void setChildren(List<Menu> children) {
-        this.children = children;
     }
 }

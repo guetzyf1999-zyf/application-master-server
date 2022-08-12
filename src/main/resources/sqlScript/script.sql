@@ -33,23 +33,26 @@ create table app_user_authorities
     app_user_id int8 references app_user (id), -- 外键关联用户ID
     authority   varchar(255) unique
 );
+create sequence organization_server_seq;
 
--- 菜单建表脚本 start
-create table menu (
-    id int4 not null default nextval('application_seq'::regclass),
-    disabled boolean not null,
-    icon varchar(255),
-    level int4 not null,
-    route_url varchar(255),
-    title varchar(255),
-    primary key (id)
-);
-create table menu_menu (
-    menu_id int4 not null,
-    children_id int4 not null
-);
-alter table menu_menu drop constraint if exists UK_6huq1e1x6rbtvcl1xbophbm70;
-alter table menu_menu add constraint UK_6huq1e1x6rbtvcl1xbophbm70 unique (children_id);
-alter table menu_menu add constraint FKr10heac8h2jjd4c15281cugyc foreign key (children_id) references menu;
-alter table menu_menu add constraint FK3cg9sxpw8wctsrvb48eii23rv foreign key (menu_id) references menu;
--- 菜单建表脚本 end
+alter sequence organization_server_seq restart with 1;
+
+-- master菜单建表脚本 start
+-- create table menu (
+--     id int4 not null default nextval('organization_server_seq'::regclass),
+--     disabled boolean not null,
+--     icon varchar(255),
+--     level int4 not null,
+--     route_url varchar(255),
+--     title varchar(255),
+--     primary key (id)
+-- );
+-- create table menu_menu (
+--     menu_id int4 not null,
+--     children_id int4 not null
+-- );
+-- alter table menu_menu drop constraint if exists UK_6huq1e1x6rbtvcl1xbophbm70;
+-- alter table menu_menu add constraint UK_6huq1e1x6rbtvcl1xbophbm70 unique (children_id);
+-- alter table menu_menu add constraint FKr10heac8h2jjd4c15281cugyc foreign key (children_id) references menu;
+-- alter table menu_menu add constraint FK3cg9sxpw8wctsrvb48eii23rv foreign key (menu_id) references menu;
+-- master菜单建表脚本 end
