@@ -1,4 +1,3 @@
-
 -- 创建应用全局自增ID序列
 create sequence application_seq;
 
@@ -14,18 +13,26 @@ alter sequence username_seq restart with 6000;
 -- 用户表
 create table app_user
 (
-    id                      int4 primary key default nextval('application_seq'::regclass),
+    id                      int4 primary key    default nextval('application_seq'::regclass),
     username                varchar(255) unique default nextval('username_seq'::regclass),
     password                varchar(255),
     nick_name               varchar(255),
     email                   varchar(255),
     telephone               varchar(255) unique,
     register_date           date,
-    account_non_expired     boolean          default false,
-    account_non_locked      boolean          default false,
-    credentials_non_expired boolean          default false,
-    enabled                 boolean          default false
+    account_non_expired     boolean             default false,
+    account_non_locked      boolean             default false,
+    credentials_non_expired boolean             default false,
+    enabled                 boolean             default false
 );
+
+-- 用户所属企业信息
+create table app_user_affiliated_organization
+(
+    app_user_id        int4 references app_user (id),
+    organization_seq int4 default nextval('organization_seq'::regclass),
+    in_use           boolean
+)
 
 -- 用户权限表
 create table app_user_authorities
@@ -36,6 +43,22 @@ create table app_user_authorities
 create sequence organization_server_seq;
 
 alter sequence organization_server_seq restart with 1;
+
+-- 组织信息建表 start
+create sequence organization_seq;
+
+create table organization
+(
+    id                    int4 primary key default nextval('application_seq'::regclass),
+    organization_seq      int4             default nextval('organization_seq'::regclass),
+    organization_describe varchar(500),
+    creator               varchar(255),
+    creatorUsername       varchar(255),
+    createTime            Date,
+    owner                 varchar(255),
+    ownerUsername         varchar(255)
+)
+-- 组织信息建表 end
 
 -- master菜单建表脚本 start
 -- create table menu (

@@ -1,15 +1,9 @@
 package com.application.template.controller;
 
-import com.application.template.config.applicationProps.MessageConfigProps;
 import com.application.template.constant.ExternalServiceAddress;
 import com.application.template.entity.appUser.AppUser;
-import com.application.template.entity.appUser.auth.RegisterBody;
-import com.application.template.enumtype.MessageSendingApproach;
 import com.application.template.mapper.appUser.AppUserMapper;
-import com.application.template.service.factory.MessageSendingServiceFactory;
-import com.application.template.service.message.MessageService;
 import com.application.template.util.HttpUtil;
-import com.application.template.util.SpringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,8 +26,8 @@ public class TestController {
 
     @GetMapping("my-test")
     public void test() {
-        String[] split = unAuthPath.split(",");
-        System.out.println(Arrays.toString(split));
+        AppUser userWithOrganizationById = appUserMapper.findUserWithOrganizationById(3);
+        System.out.println(userWithOrganizationById);
     }
 
 

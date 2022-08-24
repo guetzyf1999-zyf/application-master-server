@@ -1,4 +1,4 @@
-package com.application.template.entity.appUser.auth;
+package com.application.template.dto.auth;
 
 import com.application.template.entity.appUser.AppUser;
 

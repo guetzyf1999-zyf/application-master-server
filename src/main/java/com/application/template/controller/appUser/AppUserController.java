@@ -1,7 +1,11 @@
 package com.application.template.controller.appUser;
 
+import com.application.template.dto.auth.AuthBody;
+import com.application.template.dto.login.CaptchaAuthAccessWay;
+import com.application.template.dto.login.CaptchaAuthDTO;
+import com.application.template.dto.login.JwtAuthResponseBody;
+import com.application.template.dto.login.RegisterBody;
 import com.application.template.entity.appUser.AppUser;
-import com.application.template.entity.appUser.auth.*;
 import com.application.template.service.appUser.AppUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

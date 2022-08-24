@@ -10,10 +10,13 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AppUserMapper extends BaseMapper<AppUser> {
 
+    @Select("select * from app_user where id = #{id}")
     AppUser findUserById(Integer id);
 
+    @Select("select id from app_user where telephone = #{telephone}")
     Integer findIdByTelephone(String telephone);
 
+    @Select("select id from app_user where email = #{email}")
     Integer findIdByEmail(String email);
 
     @Select("select email from app_user where username = #{username}")
@@ -27,4 +30,6 @@ public interface AppUserMapper extends BaseMapper<AppUser> {
 
     @Select(value = "select username from app_user where email = #{email}")
     String findUsernameByEmail(String email);
+
+    AppUser findUserWithOrganizationById(Integer id);
 }

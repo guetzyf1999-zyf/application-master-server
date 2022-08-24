@@ -1,6 +1,7 @@
 package com.application.template.entity.appUser;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import org.springframework.security.core.GrantedAuthority;
@@ -28,6 +29,27 @@ public class AppUser implements UserDetails {
     private boolean credentialsNonExpired;
     // 表示当前用户是否可用
     private boolean enabled;
+    @TableField(exist = false)
+    private List<AffiliatedOrganization> affiliatedOrganizations;
+
+    public AppUser() {}
+
+    public AppUser(Integer id, String username, String nickName, String password, String telephone, String email,
+                   Date registerDate, boolean accountNonExpired, boolean accountNonLocked,
+                   boolean credentialsNonExpired, boolean enabled, List<AffiliatedOrganization> affiliatedOrganizations) {
+        this.id = id;
+        this.username = username;
+        this.nickName = nickName;
+        this.password = password;
+        this.telephone = telephone;
+        this.email = email;
+        this.registerDate = registerDate;
+        this.accountNonExpired = accountNonExpired;
+        this.accountNonLocked = accountNonLocked;
+        this.credentialsNonExpired = credentialsNonExpired;
+        this.enabled = enabled;
+        this.affiliatedOrganizations = affiliatedOrganizations;
+    }
 
     @Override
     public List<? extends GrantedAuthority> getAuthorities() {
@@ -130,5 +152,13 @@ public class AppUser implements UserDetails {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public List<AffiliatedOrganization> getAffiliatedOrganizations() {
+        return affiliatedOrganizations;
+    }
+
+    public void setAffiliatedOrganizations(List<AffiliatedOrganization> affiliatedOrganizations) {
+        this.affiliatedOrganizations = affiliatedOrganizations;
     }
 }

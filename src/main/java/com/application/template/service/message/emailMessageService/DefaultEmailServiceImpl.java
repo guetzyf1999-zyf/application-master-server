@@ -1,7 +1,7 @@
 package com.application.template.service.message.emailMessageService;
 
 import com.application.template.aspectJ.annotation.TimeCount;
-import com.application.template.entity.appUser.auth.CaptchaAuthAccessWay;
+import com.application.template.dto.login.CaptchaAuthAccessWay;
 import com.application.template.exceptionHandle.AppAssert;
 import com.application.template.exceptionHandle.exception.AppException;
 import com.application.template.util.EmailUtil;
@@ -10,8 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-
-import java.util.Random;
 
 @Service
 public class DefaultEmailServiceImpl implements EmailMessageService {

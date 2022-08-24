@@ -4,7 +4,11 @@ import java.util.Date;
 import java.util.Random;
 
 import com.application.template.aspectJ.annotation.TimeCount;
-import com.application.template.entity.appUser.auth.*;
+import com.application.template.dto.auth.AuthBody;
+import com.application.template.dto.login.CaptchaAuthAccessWay;
+import com.application.template.dto.login.CaptchaAuthDTO;
+import com.application.template.dto.login.JwtAuthResponseBody;
+import com.application.template.dto.login.RegisterBody;
 import com.application.template.service.authService.JwtService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +22,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
-import com.application.template.config.applicationProps.MessageConfigProps;
 import com.application.template.entity.appUser.AppUser;
 import com.application.template.enumtype.AppUserAuthExceptionHandle;
 import com.application.template.enumtype.MessageSendingApproach;

@@ -2,8 +2,7 @@ package com.application.template.service.message.smsMessageService;
 
 import com.application.template.config.applicationProps.SmsMessageConfigProps;
 import com.application.template.constant.ExternalServiceAddress;
-import com.application.template.entity.appUser.auth.CaptchaAuthAccessWay;
-import com.application.template.entity.appUser.auth.RegisterBody;
+import com.application.template.dto.login.CaptchaAuthAccessWay;
 import com.application.template.exceptionHandle.AppAssert;
 import com.application.template.exceptionHandle.exception.AppException;
 import com.application.template.util.HttpUtil;
@@ -13,7 +12,6 @@ import org.springframework.util.StringUtils;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
 @Service("smsMessageServiceImpl")
 public class SmsMessageServiceImpl implements SmsMessageService {

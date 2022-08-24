@@ -1,24 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "<http://mybatis.org/dtd/mybatis-3-mapper.dtd>">
 <mapper namespace="com.application.template.mapper.appUser.AppUserMapper">
-    <select id="findUserById" resultType="com.application.template.entity.appUser.AppUser">
-        select * from app_user
-        <where>
-            id = #{id};
-        </where>
+    <resultMap id="BaseUserInfo" type="com.application.template.entity.appUser.AppUser">
+        <id property="id" column="id"/>
+        <result property="username" column="username"/>
+        <result property="nickName" column="nick_name" javaType="String"/>
+        <result property="password" column="password"/>
+        <result property="telephone" column="telephone"/>
+        <result property="email" column="email"/>
+        <result property="registerDate" column="register_date"/>
+        <result property="accountNonExpired" column="account_non_expired"/>
+        <result property="accountNonLocked" column="account_non_locked"/>
+        <result property="credentialsNonExpired" column="credentials_non_expired"/>
+        <result property="enabled" column="enabled"/>
+    </resultMap>
+
+    <resultMap id="userWithOrganizationInfo" type="com.application.template.entity.appUser.AppUser"
+               extends="BaseUserInfo">
+        <collection property="affiliatedOrganizations" javaType="java.util.List" column="id"
+                    select="selectAffiliatedOrganizationInfo">
+        </collection>
+    </resultMap>
+
+    <resultMap id="AffiliatedOrganizationInfo" type="com.application.template.entity.appUser.AffiliatedOrganization">
+<!--        <result property="appUserId" column="app_user_id"/>-->
+        <result property="organizationSeq" column="organization_seq"/>
+        <result property="inUse" column="in_use"/>
+    </resultMap>
+
+    <select id="selectAffiliatedOrganizationInfo" resultMap="AffiliatedOrganizationInfo">
+       select * from app_user_affiliated_organization auao where auao.app_user_id = #{id}
     </select>
 
-    <select id="findIdByTelephone" resultType="Integer">
-        select id from app_user
-        <where>
-            telephone = #{telephone};
-        </where>
-    </select>
-
-    <select id="findIdByEmail" resultType="Integer">
-        select id from app_user
-        <where>
-            email = #{email};
-        </where>
+    <select id="findUserWithOrganizationById" resultMap="userWithOrganizationInfo">
+        select au.* from app_user au where au.id = #{id}
     </select>
 </mapper>
