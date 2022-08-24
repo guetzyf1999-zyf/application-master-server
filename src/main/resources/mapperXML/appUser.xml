@@ -29,7 +29,7 @@
     </resultMap>
 
     <select id="selectAffiliatedOrganizationInfo" resultMap="AffiliatedOrganizationInfo">
-       select * from app_user_affiliated_organization auao where auao.app_user_id = #{id}
+       select auao.organization_seq,auao.in_use from app_user_affiliated_organization auao where auao.app_user_id = #{id}
     </select>
 
     <select id="findUserWithOrganizationById" resultMap="userWithOrganizationInfo">
