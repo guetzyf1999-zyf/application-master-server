@@ -4,6 +4,7 @@ import com.application.template.constant.ExternalServiceAddress;
 import com.application.template.entity.appUser.AppUser;
 import com.application.template.mapper.appUser.AppUserMapper;
 import com.application.template.util.HttpUtil;
+import com.application.template.util.JsonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -26,8 +28,11 @@ public class TestController {
 
     @GetMapping("my-test")
     public void test() {
-        AppUser userWithOrganizationById = appUserMapper.findUserWithOrganizationById(3);
-        System.out.println(userWithOrganizationById);
+        Map<String, String> params = new HashMap<>();
+        params.put("username", "%6%");
+        params.put("nickName", "%石乐志%");
+        List<AppUser> appUserByParams = appUserMapper.findAppUserByParams(params);
+        System.out.println(JsonUtil.toJson(appUserByParams));
     }
 
 

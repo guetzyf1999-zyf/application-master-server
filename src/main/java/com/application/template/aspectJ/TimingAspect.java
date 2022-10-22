@@ -1,6 +1,8 @@
 package com.application.template.aspectJ;
 
 import com.application.template.aspectJ.annotation.TimeCount;
+import com.application.template.exceptionHandle.AppAssert;
+import com.application.template.exceptionHandle.exception.AppException;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
@@ -44,6 +46,8 @@ public class TimingAspect {
         Map<String, Long> timeMap = START_TIME.get();
         boolean hasTimeMap = timeMap != null;
         timeMap = hasTimeMap ? timeMap : new HashMap<>();
+        boolean hasSameName = timeMap.containsKey(countName);
+        AppAssert.judge(hasSameName, new AppException("同一个调用栈内存在相同得计时名:" + countName));
         timeMap.put(countName, System.currentTimeMillis());
         if (!hasTimeMap) START_TIME.set(timeMap);
     }

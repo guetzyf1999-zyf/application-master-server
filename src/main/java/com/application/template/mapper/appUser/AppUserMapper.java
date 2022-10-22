@@ -3,8 +3,13 @@ package com.application.template.mapper.appUser;
 import com.application.template.entity.appUser.AppUser;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Result;
+import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.Map;
 
 @Mapper
 @Repository
@@ -32,4 +37,7 @@ public interface AppUserMapper extends BaseMapper<AppUser> {
     String findUsernameByEmail(String email);
 
     AppUser findUserWithOrganizationById(Integer id);
+
+    @Select(value = "select * from app_user where username like #{username} and nick_name like #{nickName}")
+    List<AppUser> findAppUserByParams(Map<String,String> params);
 }
