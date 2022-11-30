@@ -1,16 +1,17 @@
 package com.application.template.dto.auth;
 
 public class AuthBody {
-    private String username;
+    private String verifyCredentials;
     private String password;
     private boolean remember;
+    private Integer authWay;
 
-    public String getUsername() {
-        return username;
+    public String getVerifyCredentials() {
+        return verifyCredentials;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setVerifyCredentials(String verifyCredentials) {
+        this.verifyCredentials = verifyCredentials;
     }
 
     public String getPassword() {
@@ -27,5 +28,13 @@ public class AuthBody {
 
     public void setRemember(boolean remember) {
         this.remember = remember;
+    }
+
+    public Integer getAuthWay() {
+        return authWay;
+    }
+
+    public void setAuthWay(Integer authWay) {
+        this.authWay = authWay;
     }
 }

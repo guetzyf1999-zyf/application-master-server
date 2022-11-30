@@ -12,4 +12,6 @@ public class ExternalServiceAddress {
 
     //SMS中国网建短信服务接口
     public static final String SMS_MESSAGE_HOST = "http://utf8.api.smschinese.cn/";
+
+    public static final String IP_ADD = "http://ip.cn/api/index";
 }

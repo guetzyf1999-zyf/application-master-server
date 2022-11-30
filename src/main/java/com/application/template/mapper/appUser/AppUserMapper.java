@@ -21,6 +21,9 @@ public interface AppUserMapper extends BaseMapper<AppUser> {
     @Select("select id from app_user where telephone = #{telephone}")
     Integer findIdByTelephone(String telephone);
 
+    @Select("select * from app_user where telephone = #{telephone}")
+    AppUser findUserByTelephone(String telephone);
+
     @Select("select id from app_user where email = #{email}")
     Integer findIdByEmail(String email);
 

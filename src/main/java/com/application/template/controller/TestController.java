@@ -38,11 +38,10 @@ public class TestController {
 
     @GetMapping("json-test")
     public String jsonTest() {
-        AppUser userById = appUserMapper.findUserById(1);
-        String s = HttpUtil.httpPost(ExternalServiceAddress.TEST + "json-test", userById);
         Map<String, Object> map = new HashMap<>();
-        map.put("name","156");
-        HttpUtil.httpGetWithParams(ExternalServiceAddress.TEST + "my-test", map);
+        map.put("ip","192.168.1.92");
+        map.put("type","1");
+        String s = HttpUtil.httpGetWithParams(ExternalServiceAddress.IP_ADD, map);
         return s;
     }
 

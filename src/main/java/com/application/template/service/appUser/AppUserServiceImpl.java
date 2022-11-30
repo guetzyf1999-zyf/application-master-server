@@ -9,7 +9,9 @@ import com.application.template.dto.login.CaptchaAuthAccessWay;
 import com.application.template.dto.login.CaptchaAuthDTO;
 import com.application.template.dto.login.JwtAuthResponseBody;
 import com.application.template.dto.login.RegisterBody;
+import com.application.template.enumtype.LoginAuthWay;
 import com.application.template.service.authService.JwtService;
+import com.application.template.util.JsonUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +54,8 @@ public class AppUserServiceImpl implements AppUserService {
 	@Override
 	public JwtAuthResponseBody login(AuthBody authBody) {
 		try {
-			UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(authBody.getUsername(),
+			String authJson = JsonUtil.toJson(authBody);
+			UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(authJson,
 					authBody.getPassword());
 			Authentication authenticate = SpringUtil.getBean(AuthenticationManager.class).authenticate(authenticationToken);
 			AppUser user = (AppUser) authenticate.getPrincipal();
@@ -71,8 +74,8 @@ public class AppUserServiceImpl implements AppUserService {
 	public CaptchaAuthDTO getCaptchaCode(CaptchaAuthAccessWay accessWay) {
 		MessageSendingApproach approach = MessageSendingApproach.valueOf(accessWay.getAuthWay());
 		MessageSendingServiceFactory serviceFactory = SpringUtil.getBean(approach.getMessageServiceFactoryClass());
-		MessageService messageService = serviceFactory.getMessageService();
 		String captcha = String.valueOf(new Random().nextInt(999999) % (999999 - 100000 + 1) + 100000);
+		MessageService messageService = serviceFactory.getMessageService();
 		messageService.sendCaptchaMessage(accessWay, genMessageTemplate(), captcha);
 		return new CaptchaAuthDTO(captcha, effectiveTime);
 	}
@@ -88,9 +91,16 @@ public class AppUserServiceImpl implements AppUserService {
 	}
 
 	@Override
-	public UserDetails loadUserByUsername(String usernameOrEmail) {
-		AppUser user = userMapper.findUserByUsername(usernameOrEmail);
-		return user != null ? user : userMapper.findUserByEmail(usernameOrEmail);
+	public UserDetails loadUserByUsername(String authJson) {
+		AuthBody authBody = JsonUtil.toObject(authJson, AuthBody.class);
+		if (authBody.getAuthWay().equals(LoginAuthWay.USERNAME.getIndex())) {
+			return userMapper.findUserByUsername(authBody.getVerifyCredentials());
+		} else if (authBody.getAuthWay().equals(LoginAuthWay.PHONE.getIndex())) {
+			return userMapper.findUserByTelephone(authBody.getVerifyCredentials());
+		} else if (authBody.getAuthWay().equals(LoginAuthWay.EMAIL.getIndex())) {
+			return userMapper.findUserByEmail(authBody.getVerifyCredentials());
+		}
+		return null;
 	}
 
 	private AppUser createAppUser(RegisterBody registerBody) {
