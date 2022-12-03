@@ -10,6 +10,7 @@ import com.application.template.dto.login.CaptchaAuthDTO;
 import com.application.template.dto.login.JwtAuthResponseBody;
 import com.application.template.dto.login.RegisterBody;
 import com.application.template.enumtype.LoginAuthWay;
+import com.application.template.factory.MessageSendingServiceFactory;
 import com.application.template.service.authService.JwtService;
 import com.application.template.util.JsonUtil;
 import org.slf4j.Logger;
@@ -30,7 +31,6 @@ import com.application.template.enumtype.MessageSendingApproach;
 import com.application.template.exceptionHandle.AppAssert;
 import com.application.template.exceptionHandle.exception.AppUserException;
 import com.application.template.mapper.appUser.AppUserMapper;
-import com.application.template.service.factory.MessageSendingServiceFactory;
 import com.application.template.service.message.MessageService;
 import com.application.template.util.SpringUtil;
 
@@ -73,9 +73,8 @@ public class AppUserServiceImpl implements AppUserService {
 	@TimeCount(name = "getCaptchaCode")
 	public CaptchaAuthDTO getCaptchaCode(CaptchaAuthAccessWay accessWay) {
 		MessageSendingApproach approach = MessageSendingApproach.valueOf(accessWay.getAuthWay());
-		MessageSendingServiceFactory serviceFactory = SpringUtil.getBean(approach.getMessageServiceFactoryClass());
 		String captcha = String.valueOf(new Random().nextInt(999999) % (999999 - 100000 + 1) + 100000);
-		MessageService messageService = serviceFactory.getMessageService();
+		MessageService messageService = MessageSendingServiceFactory.getMessageService(approach);
 		messageService.sendCaptchaMessage(accessWay, genMessageTemplate(), captcha);
 		return new CaptchaAuthDTO(captcha, effectiveTime);
 	}
