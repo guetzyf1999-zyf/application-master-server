@@ -27,7 +27,7 @@ import java.util.Collections;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
 
-    private static final String[] DISABLE_AUTH = new String[]{"/app/user/**" ,"/app/test/json-test"};
+    private static final String[] DISABLE_AUTH = new String[]{"/app/user/**" ,"/app/test/**"};
 
     @Autowired
     private UserAuthenticationService userAuthenticationService;

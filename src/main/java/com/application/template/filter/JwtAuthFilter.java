@@ -1,8 +1,6 @@
 package com.application.template.filter;
 
 import com.application.template.dto.auth.AuthBody;
-import com.application.template.exceptionHandle.AppAssert;
-import com.application.template.exceptionHandle.exception.AppException;
 import com.application.template.service.authService.jwtservice.JwtService;
 import com.application.template.util.JsonUtil;
 import com.auth0.jwt.interfaces.Claim;
@@ -35,7 +33,11 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     protected void doFilterInternal(@NotNull HttpServletRequest request, @NotNull HttpServletResponse response,
               @NotNull FilterChain filterChain) throws IOException, ServletException {
         String jwtToken = request.getHeader("Authorization");
-        AppAssert.judge(!StringUtils.hasText(jwtToken), new AppException("请提供认证信息!"));
+        if (StringUtils.hasText(jwtToken)) verifySignature(jwtToken, request);
+        filterChain.doFilter(request, response);
+    }
+
+    private void verifySignature(String jwtToken,HttpServletRequest request) {
         String token = jwtToken.replace("Bearer ", "");
         Map<String, Claim> jwtClaim = jwtService.decodedJwt(token);
         String phone = jwtClaim.get("telephone").asString();
@@ -44,6 +46,5 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 (userDetails, userDetails.getPassword(), userDetails.getAuthorities());
         authenticate.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
         SecurityContextHolder.getContext().setAuthentication(authenticate);
-        filterChain.doFilter(request, response);
     }
 }
