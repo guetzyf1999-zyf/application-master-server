@@ -1,18 +1,22 @@
 package com.application.template.service.appUser;
 
-import java.util.Date;
-import java.util.Random;
-
 import com.application.template.aspectJ.annotation.TimeCount;
 import com.application.template.dto.auth.AuthBody;
 import com.application.template.dto.login.CaptchaAuthAccessWay;
 import com.application.template.dto.login.CaptchaAuthDTO;
 import com.application.template.dto.login.JwtAuthResponseBody;
 import com.application.template.dto.login.RegisterBody;
-import com.application.template.enumtype.LoginAuthWay;
+import com.application.template.entity.appUser.AppUser;
+import com.application.template.enumtype.AppUserAuthExceptionHandle;
+import com.application.template.enumtype.MessageSendingApproach;
+import com.application.template.exceptionHandle.AppAssert;
+import com.application.template.exceptionHandle.exception.AppUserException;
 import com.application.template.factory.MessageSendingServiceFactory;
-import com.application.template.service.authService.JwtService;
+import com.application.template.mapper.appUser.AppUserMapper;
+import com.application.template.service.authService.jwtservice.JwtService;
+import com.application.template.service.message.MessageService;
 import com.application.template.util.JsonUtil;
+import com.application.template.util.SpringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,18 +25,11 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
-import com.application.template.entity.appUser.AppUser;
-import com.application.template.enumtype.AppUserAuthExceptionHandle;
-import com.application.template.enumtype.MessageSendingApproach;
-import com.application.template.exceptionHandle.AppAssert;
-import com.application.template.exceptionHandle.exception.AppUserException;
-import com.application.template.mapper.appUser.AppUserMapper;
-import com.application.template.service.message.MessageService;
-import com.application.template.util.SpringUtil;
+import java.util.Date;
+import java.util.Random;
 
 @Service
 public class AppUserServiceImpl implements AppUserService {
@@ -87,19 +84,6 @@ public class AppUserServiceImpl implements AppUserService {
 		user.setUsername(userMapper.findUsernameByEmail(user.getEmail()));
 		logger.info("新用户注册成功{}", registerBody.getNickname() + registerBody.getPhoneNumber());
 		return user;
-	}
-
-	@Override
-	public UserDetails loadUserByUsername(String authJson) {
-		AuthBody authBody = JsonUtil.toObject(authJson, AuthBody.class);
-		if (authBody.getAuthWay().equals(LoginAuthWay.USERNAME.getIndex())) {
-			return userMapper.findUserByUsername(authBody.getVerifyCredentials());
-		} else if (authBody.getAuthWay().equals(LoginAuthWay.PHONE.getIndex())) {
-			return userMapper.findUserByTelephone(authBody.getVerifyCredentials());
-		} else if (authBody.getAuthWay().equals(LoginAuthWay.EMAIL.getIndex())) {
-			return userMapper.findUserByEmail(authBody.getVerifyCredentials());
-		}
-		return null;
 	}
 
 	private AppUser createAppUser(RegisterBody registerBody) {

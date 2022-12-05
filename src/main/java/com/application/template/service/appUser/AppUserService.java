@@ -8,7 +8,7 @@ import com.application.template.dto.login.RegisterBody;
 import com.application.template.entity.appUser.AppUser;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
-public interface AppUserService extends UserDetailsService {
+public interface AppUserService {
 
     JwtAuthResponseBody login(AuthBody authBody);
 

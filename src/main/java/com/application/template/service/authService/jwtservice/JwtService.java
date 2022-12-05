@@ -1,4 +1,4 @@
-package com.application.template.service.authService;
+package com.application.template.service.authService.jwtservice;
 
 public interface JwtService {
 

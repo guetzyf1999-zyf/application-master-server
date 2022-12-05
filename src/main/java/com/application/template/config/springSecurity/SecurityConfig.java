@@ -1,6 +1,6 @@
 package com.application.template.config.springSecurity;
 
-import com.application.template.service.appUser.AppUserService;
+import com.application.template.service.authService.UserAuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,10 +24,10 @@ import java.util.Collections;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
 
-    private static final String[] DISABLE_AUTH = new String[]{"/app/user/**" ,"/app/test/**"};
+    private static final String[] DISABLE_AUTH = new String[]{"/app/user/**" ,"/app/test/json-test"};
 
     @Autowired
-    private AppUserService appUserService;
+    private UserAuthenticationService userAuthenticationService;
 
     @Bean
     public SecurityFilterChain genSecurityFilterChain(HttpSecurity security) throws Exception {
@@ -54,7 +54,7 @@ public class SecurityConfig {
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder managerBuilder) throws Exception {
-        managerBuilder.userDetailsService(appUserService).passwordEncoder(new BCryptPasswordEncoder());
+        managerBuilder.userDetailsService(userAuthenticationService).passwordEncoder(new BCryptPasswordEncoder());
     }
 
     @Bean
