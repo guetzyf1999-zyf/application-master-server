@@ -37,8 +37,8 @@ public class SecurityConfig {
         security.cors();
         security.headers().cacheControl();
         security.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        security.addFilterBefore(jwtAuthFilter(), UsernamePasswordAuthenticationFilter.class);
         return security.antMatcher("/**").csrf().disable()
-                .addFilterBefore(jwtAuthFilter(), UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests(
                         authorize -> authorize.antMatchers(DISABLE_AUTH).permitAll().anyRequest().authenticated())
                 .httpBasic().disable().formLogin().disable().build();

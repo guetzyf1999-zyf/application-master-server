@@ -16,6 +16,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -45,6 +46,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         UserDetails userDetails = authenticationService.loadUserByUsername((JsonUtil.toJson(new AuthBody(phone))));
         UsernamePasswordAuthenticationToken authenticate = new UsernamePasswordAuthenticationToken
                 (userDetails, userDetails.getPassword(), userDetails.getAuthorities());
+        authenticate.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
         SecurityContextHolder.getContext().setAuthentication(authenticate);
         filterChain.doFilter(request, response);
     }
