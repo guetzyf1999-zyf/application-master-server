@@ -1,6 +1,8 @@
 package com.application.template.config.springSecurity;
 
+import com.application.template.filter.JwtAuthFilter;
 import com.application.template.service.authService.UserAuthenticationService;
+import com.application.template.util.SpringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,6 +15,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -35,6 +38,7 @@ public class SecurityConfig {
         security.headers().cacheControl();
         security.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         return security.antMatcher("/**").csrf().disable()
+                .addFilterBefore(jwtAuthFilter(), UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests(
                         authorize -> authorize.antMatchers(DISABLE_AUTH).permitAll().anyRequest().authenticated())
                 .httpBasic().disable().formLogin().disable().build();
@@ -60,5 +64,10 @@ public class SecurityConfig {
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfiguration) throws Exception {
         return authConfiguration.getAuthenticationManager();
+    }
+
+    @Bean
+    public JwtAuthFilter jwtAuthFilter() {
+        return new JwtAuthFilter();
     }
 }
