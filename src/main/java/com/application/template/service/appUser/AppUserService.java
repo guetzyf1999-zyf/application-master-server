@@ -6,7 +6,7 @@ import com.application.template.dto.login.CaptchaAuthDTO;
 import com.application.template.dto.login.JwtAuthResponseBody;
 import com.application.template.dto.login.RegisterBody;
 import com.application.template.entity.appUser.AppUser;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UserDetails;
 
 public interface AppUserService {
 
@@ -15,4 +15,10 @@ public interface AppUserService {
     CaptchaAuthDTO getCaptchaCode(CaptchaAuthAccessWay accessWay);
 
     AppUser register(RegisterBody registerBody);
+
+    UserDetails getUserByUsername(String username);
+
+    UserDetails getUserByTelephone(String phone);
+
+    UserDetails getUserByEmail(String email);
 }

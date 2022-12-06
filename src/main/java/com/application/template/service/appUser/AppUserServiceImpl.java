@@ -25,6 +25,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
@@ -84,6 +85,21 @@ public class AppUserServiceImpl implements AppUserService {
 		user.setUsername(userMapper.findUsernameByEmail(user.getEmail()));
 		logger.info("新用户注册成功{}", registerBody.getNickname() + registerBody.getPhoneNumber());
 		return user;
+	}
+
+    @Override
+    public UserDetails getUserByUsername(String username) {
+		return userMapper.findUserByUsername(username);
+    }
+
+	@Override
+	public UserDetails getUserByTelephone(String phone) {
+		return userMapper.findUserByTelephone(phone);
+	}
+
+	@Override
+	public UserDetails getUserByEmail(String email) {
+		return userMapper.findUserByEmail(email);
 	}
 
 	private AppUser createAppUser(RegisterBody registerBody) {
