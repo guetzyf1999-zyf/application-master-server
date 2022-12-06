@@ -1,7 +1,7 @@
 package com.application.template.factory;
 
 import com.application.template.enumtype.LoginAuthWay;
-import com.application.template.service.authService.userloadserivce.UserLoadService;
+import com.application.template.service.authentication.userloadserivce.UserLoadService;
 import com.application.template.util.SpringUtil;
 
 import java.util.EnumMap;

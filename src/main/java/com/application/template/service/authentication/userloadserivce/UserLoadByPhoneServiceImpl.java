@@ -1,4 +1,4 @@
-package com.application.template.service.authService.userloadserivce;
+package com.application.template.service.authentication.userloadserivce;
 
 import com.application.template.dto.auth.AuthBody;
 import com.application.template.enumtype.LoginAuthWay;

@@ -1,7 +1,7 @@
 package com.application.template.filter;
 
 import com.application.template.dto.auth.AuthBody;
-import com.application.template.service.authService.jwtservice.JwtService;
+import com.application.template.service.authentication.jwtservice.JwtService;
 import com.application.template.util.JsonUtil;
 import com.auth0.jwt.interfaces.Claim;
 import org.jetbrains.annotations.NotNull;

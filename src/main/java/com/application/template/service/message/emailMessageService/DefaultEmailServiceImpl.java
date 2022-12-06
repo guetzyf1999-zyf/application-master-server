@@ -1,7 +1,7 @@
 package com.application.template.service.message.emailMessageService;
 
 import com.application.template.aspectJ.annotation.TimeCount;
-import com.application.template.dto.login.CaptchaAuthAccessWay;
+import com.application.template.dto.auth.CaptchaAuthAccessWay;
 import com.application.template.enumtype.MessageSendingApproach;
 import com.application.template.exceptionHandle.AppAssert;
 import com.application.template.exceptionHandle.exception.AppException;

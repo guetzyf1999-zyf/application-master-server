@@ -1,4 +1,4 @@
-package com.application.template.service.authService.jwtservice;
+package com.application.template.service.authentication.jwtservice;
 
 import com.auth0.jwt.interfaces.Claim;
 

@@ -1,8 +1,7 @@
 package com.application.template.config.springSecurity;
 
 import com.application.template.filter.JwtAuthFilter;
-import com.application.template.service.authService.UserAuthenticationService;
-import com.application.template.util.SpringUtil;
+import com.application.template.service.authentication.UserAuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,7 +26,8 @@ import java.util.Collections;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
 
-    private static final String[] DISABLE_AUTH = new String[]{"/app/user/**" ,"/app/test/**"};
+    private static final String[] DISABLE_AUTH = new String[]{"/app/login/**" ,"/app/test/**", "/app/user/register",
+            "/app/authentication/get-captcha-code"};
 
     @Autowired
     private UserAuthenticationService userAuthenticationService;

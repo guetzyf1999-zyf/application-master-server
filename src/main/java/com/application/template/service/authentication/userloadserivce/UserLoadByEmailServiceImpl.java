@@ -1,4 +1,4 @@
-package com.application.template.service.authService.userloadserivce;
+package com.application.template.service.authentication.userloadserivce;
 
 import com.application.template.dto.auth.AuthBody;
 import com.application.template.enumtype.LoginAuthWay;
@@ -12,18 +12,18 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-public class UserLoadByUsernameServiceImpl implements UserLoadService, InitializingBean {
+public class UserLoadByEmailServiceImpl implements UserLoadService, InitializingBean {
 
     @Autowired
     private AppUserService appUserService;
 
     @Override
     public UserDetails loadUserByUsername(AuthBody authBody) {
-        return appUserService.getUserByUsername(authBody.getVerifyCredentials());
+        return appUserService.getUserByEmail(authBody.getVerifyCredentials());
     }
 
     @Override
     public void afterPropertiesSet(){
-        UserLoadServiceFactory.putMessageService(LoginAuthWay.USERNAME, this);
+        UserLoadServiceFactory.putMessageService(LoginAuthWay.EMAIL, this);
     }
 }

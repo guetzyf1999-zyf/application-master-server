@@ -1,4 +1,4 @@
-package com.application.template.dto.login;
+package com.application.template.dto.auth;
 
 public class CaptchaAuthAccessWay {
     private String authWay;
