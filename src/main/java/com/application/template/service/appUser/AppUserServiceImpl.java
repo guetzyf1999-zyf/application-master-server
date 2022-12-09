@@ -21,7 +21,7 @@ public class AppUserServiceImpl implements AppUserService {
 
 	@Autowired
 	private AppUserMapper userMapper;
-	
+
 	@Autowired
 	private UserAuthenticationService authenticationService;
 
@@ -38,17 +38,17 @@ public class AppUserServiceImpl implements AppUserService {
 	}
 
 	@Override
-    public UserDetails getUserByUsername(String username) {
+    public AppUser getUserByUsername(String username) {
 		return userMapper.findUserByUsername(username);
     }
 
 	@Override
-	public UserDetails getUserByTelephone(String phone) {
+	public AppUser getUserByTelephone(String phone) {
 		return userMapper.findUserByTelephone(phone);
 	}
 
 	@Override
-	public UserDetails getUserByEmail(String email) {
+	public AppUser getUserByEmail(String email) {
 		return userMapper.findUserByEmail(email);
 	}
 
@@ -62,5 +62,16 @@ public class AppUserServiceImpl implements AppUserService {
 		AppAssert.judge(emailHasBeenUsed, new AppUserException("该邮箱已被注册"));
 		boolean phoneHasBeenUsed = userMapper.findIdByTelephone(registerBody.getPhoneNumber()) != null;
 		AppAssert.judge(phoneHasBeenUsed, new AppUserException("该电话已被注册"));
+	}
+
+	/*
+	* 参数verifyId可以是电话也可以是邮箱也可以是账号
+	* */
+	@Override
+	public UserDetails loadUserByUsername(String verifyId) {
+		AppUser user = getUserByTelephone(verifyId);
+		user = user != null ? user : getUserByEmail(verifyId);
+		user = user != null ? user : getUserByUsername(verifyId);
+		return user;
 	}
 }

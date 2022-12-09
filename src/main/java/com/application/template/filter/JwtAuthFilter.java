@@ -13,14 +13,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.application.template.dto.auth.LoginAuthBody;
+import com.application.template.service.appUser.AppUserService;
 import com.application.template.service.authentication.jwtservice.JwtService;
-import com.application.template.util.JsonUtil;
 import com.auth0.jwt.interfaces.Claim;
 
 public class JwtAuthFilter extends OncePerRequestFilter {
@@ -29,7 +27,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     private JwtService jwtService;
 
     @Autowired
-    private UserDetailsService authenticationService;
+    private AppUserService appUserService;
 
     @Override
     protected void doFilterInternal(@NotNull HttpServletRequest request, @NotNull HttpServletResponse response,
@@ -43,7 +41,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         String token = jwtToken.replace("Bearer ", "");
         Map<String, Claim> jwtClaim = jwtService.decodedJwt(token);
         String phone = jwtClaim.get("telephone").asString();
-        UserDetails userDetails = authenticationService.loadUserByUsername((JsonUtil.toJson(new LoginAuthBody(phone))));
+        UserDetails userDetails = appUserService.getUserByTelephone(phone);
         UsernamePasswordAuthenticationToken authenticate = new UsernamePasswordAuthenticationToken
                 (userDetails, userDetails.getPassword(), userDetails.getAuthorities());
         authenticate.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

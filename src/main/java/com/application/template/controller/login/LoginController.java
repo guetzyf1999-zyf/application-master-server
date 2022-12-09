@@ -8,22 +8,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.application.template.dto.auth.LoginAuthBody;
 import com.application.template.dto.login.JwtAuthResponseBody;
-import com.application.template.service.login.UserLoginService;
+import com.application.template.service.login.LoginService;
 
 @RestController
 @RequestMapping("app/login/")
 public class LoginController {
 
     @Autowired
-    private UserLoginService userLoginService;
+    private LoginService loginService;
 
     @PostMapping("login")
     public JwtAuthResponseBody login(@RequestBody LoginAuthBody loginAuthBody) {
-        return userLoginService.loginByPassWord(loginAuthBody);
-    }
-
-    @PostMapping("login-by-captcha-code")
-    public JwtAuthResponseBody loginByCaptchaCode(@RequestBody LoginAuthBody loginAuthBody) {
-        return userLoginService.loginByCaptchaCode(loginAuthBody);
+        return loginService.login(loginAuthBody);
     }
 }

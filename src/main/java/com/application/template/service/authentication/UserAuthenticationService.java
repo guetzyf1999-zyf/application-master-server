@@ -1,8 +1,6 @@
 package com.application.template.service.authentication;
 
-import org.springframework.security.core.userdetails.UserDetailsService;
-
-public interface UserAuthenticationService extends UserDetailsService {
+public interface UserAuthenticationService {
 
 	void getCaptchaCode(Integer captchaKeyPrefixIndex, String receivingId);
 

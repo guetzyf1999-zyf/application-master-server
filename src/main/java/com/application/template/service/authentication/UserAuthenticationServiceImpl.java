@@ -5,21 +5,16 @@ import java.util.Random;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import com.application.template.aspectJ.annotation.TimeCount;
-import com.application.template.dto.auth.LoginAuthBody;
 import com.application.template.enumtype.CaptchaKeyPrefix;
-import com.application.template.enumtype.LoginAuthWay;
 import com.application.template.exceptionHandle.AppAssert;
 import com.application.template.exceptionHandle.exception.AppException;
 import com.application.template.factory.MessageSendingServiceFactory;
-import com.application.template.factory.UserLoadServiceFactory;
 import com.application.template.service.message.MessageService;
-import com.application.template.util.JsonUtil;
 import com.application.template.util.RedisUtil;
 import com.application.template.util.SpringUtil;
 
@@ -34,13 +29,6 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService 
 
     @Value("${captcha.messagetemplate}")
     private String messageTemplate;
-
-    @Override
-    public UserDetails loadUserByUsername(String authJson) {
-        LoginAuthBody loginAuthBody = JsonUtil.toObject(authJson, LoginAuthBody.class);
-        return UserLoadServiceFactory.getUserLoadService(LoginAuthWay.getLoginAuthWayByIndex(loginAuthBody.getAuthWay()))
-                .loadUserByUsername(loginAuthBody);
-    }
 
     @Override
     @TimeCount(name = "getCaptchaCode")

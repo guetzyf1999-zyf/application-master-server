@@ -20,7 +20,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.application.template.filter.JwtAuthFilter;
-import com.application.template.service.authentication.UserAuthenticationService;
+import com.application.template.service.appUser.AppUserService;
 
 @Configuration
 @EnableWebSecurity
@@ -31,7 +31,7 @@ public class SecurityConfig {
             "/app/authentication/get-captcha-code/**"};
 
     @Autowired
-    private UserAuthenticationService userAuthenticationService;
+    private AppUserService appUserService;
 
     @Bean
     public SecurityFilterChain genSecurityFilterChain(HttpSecurity security) throws Exception {
@@ -59,7 +59,7 @@ public class SecurityConfig {
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder managerBuilder) throws Exception {
-        managerBuilder.userDetailsService(userAuthenticationService).passwordEncoder(new BCryptPasswordEncoder());
+        managerBuilder.userDetailsService(appUserService).passwordEncoder(new BCryptPasswordEncoder());
     }
 
     @Bean

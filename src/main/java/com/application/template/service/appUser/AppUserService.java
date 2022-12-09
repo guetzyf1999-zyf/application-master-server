@@ -1,18 +1,19 @@
 package com.application.template.service.appUser;
 
+import org.springframework.security.core.userdetails.UserDetailsService;
+
 import com.application.template.dto.login.RegisterBody;
 import com.application.template.entity.appUser.AppUser;
-import org.springframework.security.core.userdetails.UserDetails;
 
-public interface AppUserService {
+public interface AppUserService extends UserDetailsService {
 
     AppUser register(RegisterBody registerBody);
 
-    UserDetails getUserByUsername(String username);
+    AppUser getUserByUsername(String username);
 
-    UserDetails getUserByTelephone(String phone);
+    AppUser getUserByTelephone(String phone);
 
-    UserDetails getUserByEmail(String email);
+    AppUser getUserByEmail(String email);
 
     String getEmailByUsername(String username);
 }
