@@ -1,7 +1,6 @@
 package com.application.template.service.login.userloginservice;
 
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -15,16 +14,12 @@ import com.application.template.enumtype.AppUserAuthExceptionHandle;
 import com.application.template.enumtype.LoginAuthWay;
 import com.application.template.exceptionHandle.exception.AppUserException;
 import com.application.template.factory.UserLoginServiceFactory;
-import com.application.template.service.appUser.AppUserService;
 import com.application.template.util.SpringUtil;
 
 @Service
 @Transactional
 public class UserLoginByVerifyPasswordServiceImpl extends UserLoginServiceImpl
 		implements UserLoginService, InitializingBean {
-
-	@Autowired
-	private AppUserService appUserService;
 
 	@Override
 	public JwtAuthResponseBody login(LoginAuthBody loginAuthBody, LoginAuthWay loginAuthWay) {
