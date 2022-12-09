@@ -31,16 +31,15 @@ public class UserLoginServiceImpl {
     @Autowired
     protected AppUserService appUserService;
 
-
-    public JwtAuthResponseBody loginByCaptchaCode(LoginAuthBody loginAuthBody, LoginAuthWay loginAuthWay) {
-        String captchaKey = loginAuthWay.getPrefix().getPrefix() + loginAuthBody.getVerifyId();
-        authenticationService.checkCaptchaCode(captchaKey, loginAuthBody.getVerifyCode());
-        AppUser user = appUserService.getUserByEmail(loginAuthBody.getVerifyId());
-        UsernamePasswordAuthenticationToken authenticate = new UsernamePasswordAuthenticationToken(user,
-                user.getPassword(), user.getAuthorities());
-        String jwtToken = signJwtTokenAndSetSecurityContext(user, authenticate);
-        return new JwtAuthResponseBody(user, jwtToken);
-    }
+	public JwtAuthResponseBody loginByCaptchaCode(LoginAuthBody loginAuthBody, LoginAuthWay loginAuthWay,
+			AppUser user) {
+		String captchaKey = loginAuthWay.getPrefix().getPrefix() + loginAuthBody.getVerifyId();
+		authenticationService.checkCaptchaCode(captchaKey, loginAuthBody.getVerifyCode());
+		UsernamePasswordAuthenticationToken authenticate = new UsernamePasswordAuthenticationToken(user,
+				user.getPassword(), user.getAuthorities());
+		String jwtToken = signJwtTokenAndSetSecurityContext(user, authenticate);
+		return new JwtAuthResponseBody(user, jwtToken);
+	}
 
     public String signJwtTokenAndSetSecurityContext(AppUser user, UsernamePasswordAuthenticationToken authenticate) {
         SecurityContextHolder.getContext().setAuthentication(authenticate);

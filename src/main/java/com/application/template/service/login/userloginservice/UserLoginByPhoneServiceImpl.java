@@ -15,7 +15,8 @@ public class UserLoginByPhoneServiceImpl extends UserLoginServiceImpl implements
 
     @Override
     public JwtAuthResponseBody login(LoginAuthBody loginAuthBody, LoginAuthWay loginAuthWay) {
-        return super.loginByCaptchaCode(loginAuthBody, loginAuthWay);
+		return super.loginByCaptchaCode(loginAuthBody, loginAuthWay,
+				appUserService.getUserByTelephone(loginAuthBody.getVerifyId()));
     }
 
     @Override
