@@ -1,9 +1,13 @@
 package com.application.template.filter;
 
-import com.application.template.dto.auth.AuthBody;
-import com.application.template.service.authentication.jwtservice.JwtService;
-import com.application.template.util.JsonUtil;
-import com.auth0.jwt.interfaces.Claim;
+import java.io.IOException;
+import java.util.Map;
+
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -14,12 +18,10 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.Map;
+import com.application.template.dto.auth.LoginAuthBody;
+import com.application.template.service.authentication.jwtservice.JwtService;
+import com.application.template.util.JsonUtil;
+import com.auth0.jwt.interfaces.Claim;
 
 public class JwtAuthFilter extends OncePerRequestFilter {
 
@@ -41,7 +43,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         String token = jwtToken.replace("Bearer ", "");
         Map<String, Claim> jwtClaim = jwtService.decodedJwt(token);
         String phone = jwtClaim.get("telephone").asString();
-        UserDetails userDetails = authenticationService.loadUserByUsername((JsonUtil.toJson(new AuthBody(phone))));
+        UserDetails userDetails = authenticationService.loadUserByUsername((JsonUtil.toJson(new LoginAuthBody(phone))));
         UsernamePasswordAuthenticationToken authenticate = new UsernamePasswordAuthenticationToken
                 (userDetails, userDetails.getPassword(), userDetails.getAuthorities());
         authenticate.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

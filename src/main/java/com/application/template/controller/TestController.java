@@ -1,19 +1,23 @@
 package com.application.template.controller;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.application.template.constant.ExternalServiceAddress;
 import com.application.template.entity.appUser.AppUser;
 import com.application.template.mapper.appUser.AppUserMapper;
 import com.application.template.util.HttpUtil;
 import com.application.template.util.JsonUtil;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.application.template.util.RedisUtil;
+import com.application.template.util.SpringUtil;
 
 @RestController
 @RequestMapping("app/test/")
@@ -45,7 +49,7 @@ public class TestController {
     }
 
     @GetMapping("redis-test")
-    public void redisTest() {
-        HttpUtil.httpPost(ExternalServiceAddress.TEST + "redis-test", null);
+    public String redisTest(@RequestParam String key) {
+        return SpringUtil.getBean(RedisUtil.class).getStr(key);
     }
 }

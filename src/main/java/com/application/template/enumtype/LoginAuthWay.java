@@ -1,21 +1,23 @@
 package com.application.template.enumtype;
 
-import com.application.template.exceptionHandle.exception.AppException;
-
 import java.util.Arrays;
 
-public enum LoginAuthWay {
-    USERNAME("账号", 10),
-    PHONE("电话", 20),
-    EMAIL("邮箱", 30);
+import com.application.template.exceptionHandle.exception.AppException;
 
-    LoginAuthWay(String authWay, int index) {
+public enum LoginAuthWay {
+    USERNAME("账号", 10, null),
+    PHONE("电话", 20, CaptchaKeyPrefix.LOGIN_BY_PHONE),
+    EMAIL("邮箱", 30, CaptchaKeyPrefix.LOGIN_BY_EMAIL);
+
+    LoginAuthWay(String authWay, int index, CaptchaKeyPrefix prefix) {
         this.authWay = authWay;
         this.index = index;
+        this.prefix = prefix;
     }
 
     private final String authWay;
     private final Integer index;
+    private final CaptchaKeyPrefix prefix;
 
     public String getAuthWay() {
         return authWay;

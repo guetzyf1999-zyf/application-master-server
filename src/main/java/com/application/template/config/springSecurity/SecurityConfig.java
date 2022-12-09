@@ -1,7 +1,7 @@
 package com.application.template.config.springSecurity;
 
-import com.application.template.filter.JwtAuthFilter;
-import com.application.template.service.authentication.UserAuthenticationService;
+import java.util.Collections;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,7 +19,8 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.Collections;
+import com.application.template.filter.JwtAuthFilter;
+import com.application.template.service.authentication.UserAuthenticationService;
 
 @Configuration
 @EnableWebSecurity
@@ -27,7 +28,7 @@ import java.util.Collections;
 public class SecurityConfig {
 
     private static final String[] DISABLE_AUTH = new String[]{"/app/login/**" ,"/app/test/**", "/app/user/register",
-            "/app/authentication/get-captcha-code"};
+            "/app/authentication/get-captcha-code/**"};
 
     @Autowired
     private UserAuthenticationService userAuthenticationService;

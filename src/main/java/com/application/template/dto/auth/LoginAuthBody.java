@@ -2,15 +2,16 @@ package com.application.template.dto.auth;
 
 import com.application.template.enumtype.LoginAuthWay;
 
-public class AuthBody {
+public class LoginAuthBody {
     private String verifyCredentials;
     private String password;
     private boolean remember;
     private Integer authWay;
+    private String captchaCode;
 
-    public AuthBody() {}
+    public LoginAuthBody() {}
 
-    public AuthBody(String phone) {
+    public LoginAuthBody(String phone) {
         this.verifyCredentials = phone;
         this.authWay = LoginAuthWay.PHONE.getIndex();
         this.remember = true;
@@ -47,5 +48,13 @@ public class AuthBody {
 
     public void setAuthWay(Integer authWay) {
         this.authWay = authWay;
+    }
+
+    public String getCaptchaCode() {
+        return captchaCode;
+    }
+
+    public void setCaptchaCode(String captchaCode) {
+        this.captchaCode = captchaCode;
     }
 }

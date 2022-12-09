@@ -9,7 +9,10 @@ public class RegisterBody {
     private String nickname;
     private String phoneNumberPrefix;
     private String phoneNumber;
+    private String captchaCode;
 
+    public RegisterBody() {
+    }
 
     public String getEmail() {
         return email;
@@ -49,5 +52,13 @@ public class RegisterBody {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public String getCaptchaCode() {
+        return captchaCode;
+    }
+
+    public void setCaptchaCode(String captchaCode) {
+        this.captchaCode = captchaCode;
     }
 }

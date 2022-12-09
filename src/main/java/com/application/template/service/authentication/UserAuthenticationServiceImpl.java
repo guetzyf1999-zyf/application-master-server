@@ -1,23 +1,27 @@
 package com.application.template.service.authentication;
 
-import com.application.template.aspectJ.annotation.TimeCount;
-import com.application.template.dto.auth.AuthBody;
-import com.application.template.dto.auth.CaptchaAuthAccessWay;
-import com.application.template.dto.auth.CaptchaAuthDTO;
-import com.application.template.enumtype.LoginAuthWay;
-import com.application.template.enumtype.MessageSendingApproach;
-import com.application.template.factory.MessageSendingServiceFactory;
-import com.application.template.factory.UserLoadServiceFactory;
-import com.application.template.service.message.MessageService;
-import com.application.template.util.JsonUtil;
+import java.util.Random;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
-import java.util.Random;
+import com.application.template.aspectJ.annotation.TimeCount;
+import com.application.template.dto.auth.LoginAuthBody;
+import com.application.template.enumtype.CaptchaKeyPrefix;
+import com.application.template.enumtype.LoginAuthWay;
+import com.application.template.exceptionHandle.AppAssert;
+import com.application.template.exceptionHandle.exception.AppException;
+import com.application.template.factory.MessageSendingServiceFactory;
+import com.application.template.factory.UserLoadServiceFactory;
+import com.application.template.service.message.MessageService;
+import com.application.template.util.JsonUtil;
+import com.application.template.util.RedisUtil;
+import com.application.template.util.SpringUtil;
 
 @Service
 @Transactional
@@ -33,19 +37,27 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService 
 
     @Override
     public UserDetails loadUserByUsername(String authJson) {
-        AuthBody authBody = JsonUtil.toObject(authJson, AuthBody.class);
-        return UserLoadServiceFactory.getUserLoadService(LoginAuthWay.getLoginAuthWayByIndex(authBody.getAuthWay()))
-                .loadUserByUsername(authBody);
+        LoginAuthBody loginAuthBody = JsonUtil.toObject(authJson, LoginAuthBody.class);
+        return UserLoadServiceFactory.getUserLoadService(LoginAuthWay.getLoginAuthWayByIndex(loginAuthBody.getAuthWay()))
+                .loadUserByUsername(loginAuthBody);
     }
 
     @Override
     @TimeCount(name = "getCaptchaCode")
-    public CaptchaAuthDTO getCaptchaCode(CaptchaAuthAccessWay accessWay) {
-        MessageSendingApproach approach = MessageSendingApproach.valueOf(accessWay.getAuthWay());
+    public void getCaptchaCode(Integer captchaKeyPrefixIndex, String receivingId) {
+        CaptchaKeyPrefix prefix = CaptchaKeyPrefix.getCaptchaKeyPrefixByIndex(captchaKeyPrefixIndex);
+        String captchaKey = prefix.getPrefix() + receivingId;
         String captcha = String.valueOf(new Random().nextInt(999999) % (999999 - 100000 + 1) + 100000);
-        MessageService messageService = MessageSendingServiceFactory.getMessageService(approach);
-        messageService.sendCaptchaMessage(accessWay, genMessageTemplate(), captcha);
-        return new CaptchaAuthDTO(captcha, effectiveTime);
+        MessageService messageService = MessageSendingServiceFactory.getMessageService(prefix.getMessageSendingApproach());
+        messageService.sendCaptchaMessage(receivingId, genMessageTemplate(), captcha);
+        SpringUtil.getBean(RedisUtil.class).insertStr(captchaKey, captcha, prefix.getTimeout(), prefix.getUnit());
+    }
+
+    @Override
+    public void checkCaptchaCode(String captchaKey,String captcha) {
+        String captchaCode = SpringUtil.getBean(RedisUtil.class).getStr(captchaKey);
+        AppAssert.judge(!StringUtils.hasText(captchaCode), new AppException("验证码已失效,请重新获取"));
+        AppAssert.judge(!captcha.equals(captchaCode), new AppException("验证码错误!"));
     }
 
     private String genMessageTemplate() {

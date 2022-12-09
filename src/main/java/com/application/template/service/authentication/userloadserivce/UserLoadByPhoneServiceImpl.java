@@ -1,14 +1,15 @@
 package com.application.template.service.authentication.userloadserivce;
 
-import com.application.template.dto.auth.AuthBody;
-import com.application.template.enumtype.LoginAuthWay;
-import com.application.template.factory.UserLoadServiceFactory;
-import com.application.template.service.appUser.AppUserService;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.application.template.dto.auth.LoginAuthBody;
+import com.application.template.enumtype.LoginAuthWay;
+import com.application.template.factory.UserLoadServiceFactory;
+import com.application.template.service.appUser.AppUserService;
 
 @Service
 @Transactional
@@ -18,8 +19,8 @@ public class UserLoadByPhoneServiceImpl implements UserLoadService, Initializing
     private AppUserService appUserService;
 
     @Override
-    public UserDetails loadUserByUsername(AuthBody authBody) {
-        return appUserService.getUserByTelephone(authBody.getVerifyCredentials());
+    public UserDetails loadUserByUsername(LoginAuthBody loginAuthBody) {
+        return appUserService.getUserByTelephone(loginAuthBody.getVerifyCredentials());
     }
 
     @Override

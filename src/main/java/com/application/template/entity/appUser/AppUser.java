@@ -1,14 +1,17 @@
 package com.application.template.entity.appUser;
 
+import java.util.Date;
+import java.util.List;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCrypt;
+
+import com.application.template.dto.login.RegisterBody;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
-import java.util.Date;
-import java.util.List;
 
 @TableName("app_user")
 public class AppUser implements UserDetails {
@@ -33,6 +36,19 @@ public class AppUser implements UserDetails {
     private List<AffiliatedOrganization> affiliatedOrganizations;
 
     public AppUser() {}
+
+    public AppUser(RegisterBody registerBody) {
+        String hashedPassword = BCrypt.hashpw(registerBody.getPassword(), BCrypt.gensalt());
+        this.setPassword(hashedPassword);
+        this.setNickName(registerBody.getNickname());
+        this.setTelephone(registerBody.getPhoneNumber());
+        this.setRegisterDate(new Date());
+        this.setEmail(registerBody.getEmail());
+        this.setAccountNonExpired(true);
+        this.setAccountNonLocked(true);
+        this.setCredentialsNonExpired(true);
+        this.setEnabled(true);
+    }
 
     public AppUser(Integer id, String username, String nickName, String password, String telephone, String email,
                    Date registerDate, boolean accountNonExpired, boolean accountNonLocked,

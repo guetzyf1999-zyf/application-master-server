@@ -1,8 +1,9 @@
 package com.application.template.service.authentication.userloadserivce;
 
-import com.application.template.dto.auth.AuthBody;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.application.template.dto.auth.LoginAuthBody;
+
 public interface UserLoadService {
-    UserDetails loadUserByUsername(AuthBody authBody);
+    UserDetails loadUserByUsername(LoginAuthBody loginAuthBody);
 }

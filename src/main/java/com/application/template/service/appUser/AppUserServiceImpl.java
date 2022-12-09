@@ -1,18 +1,18 @@
 package com.application.template.service.appUser;
 
-import com.application.template.dto.login.RegisterBody;
-import com.application.template.entity.appUser.AppUser;
-import com.application.template.exceptionHandle.AppAssert;
-import com.application.template.exceptionHandle.exception.AppUserException;
-import com.application.template.mapper.appUser.AppUserMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import com.application.template.dto.login.RegisterBody;
+import com.application.template.entity.appUser.AppUser;
+import com.application.template.enumtype.CaptchaKeyPrefix;
+import com.application.template.exceptionHandle.AppAssert;
+import com.application.template.exceptionHandle.exception.AppUserException;
+import com.application.template.mapper.appUser.AppUserMapper;
+import com.application.template.service.authentication.UserAuthenticationService;
 
 @Service
 public class AppUserServiceImpl implements AppUserService {
@@ -21,18 +21,23 @@ public class AppUserServiceImpl implements AppUserService {
 
 	@Autowired
 	private AppUserMapper userMapper;
+	
+	@Autowired
+	private UserAuthenticationService authenticationService;
 
 	@Override
 	public AppUser register(RegisterBody registerBody) {
+		authenticationService.checkCaptchaCode(CaptchaKeyPrefix.REGISTER_BY_EMAIL.getPrefix() + registerBody.getEmail(),
+				registerBody.getCaptchaCode());
 		checkUserInfoLegal(registerBody);
-		AppUser user = createAppUser(registerBody);
+		AppUser user = new AppUser(registerBody);
 		userMapper.insert(user);
 		user.setUsername(userMapper.findUsernameByEmail(user.getEmail()));
 		logger.info("新用户注册成功{}", registerBody.getNickname() + registerBody.getPhoneNumber());
 		return user;
 	}
 
-    @Override
+	@Override
     public UserDetails getUserByUsername(String username) {
 		return userMapper.findUserByUsername(username);
     }
@@ -50,21 +55,6 @@ public class AppUserServiceImpl implements AppUserService {
 	@Override
 	public String getEmailByUsername(String username) {
 		return userMapper.findEmailByUsername(username);
-	}
-
-	private AppUser createAppUser(RegisterBody registerBody) {
-		AppUser user = new AppUser();
-		String hashedPassword = BCrypt.hashpw(registerBody.getPassword(), BCrypt.gensalt());
-		user.setPassword(hashedPassword);
-		user.setNickName(registerBody.getNickname());
-		user.setTelephone(registerBody.getPhoneNumber());
-		user.setRegisterDate(new Date());
-		user.setEmail(registerBody.getEmail());
-		user.setAccountNonExpired(true);
-		user.setAccountNonLocked(true);
-		user.setCredentialsNonExpired(true);
-		user.setEnabled(true);
-		return user;
 	}
 
 	private void checkUserInfoLegal(RegisterBody registerBody) {
