@@ -50,23 +50,6 @@ public class AppUser implements UserDetails {
         this.setEnabled(true);
     }
 
-    public AppUser(Integer id, String username, String nickName, String password, String telephone, String email,
-                   Date registerDate, boolean accountNonExpired, boolean accountNonLocked,
-                   boolean credentialsNonExpired, boolean enabled, List<AffiliatedOrganization> affiliatedOrganizations) {
-        this.id = id;
-        this.username = username;
-        this.nickName = nickName;
-        this.password = password;
-        this.telephone = telephone;
-        this.email = email;
-        this.registerDate = registerDate;
-        this.accountNonExpired = accountNonExpired;
-        this.accountNonLocked = accountNonLocked;
-        this.credentialsNonExpired = credentialsNonExpired;
-        this.enabled = enabled;
-        this.affiliatedOrganizations = affiliatedOrganizations;
-    }
-
     @Override
     public List<? extends GrantedAuthority> getAuthorities() {
         return authorities;

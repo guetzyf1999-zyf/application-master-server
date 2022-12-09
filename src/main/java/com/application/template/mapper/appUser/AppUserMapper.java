@@ -1,15 +1,14 @@
 package com.application.template.mapper.appUser;
 
-import com.application.template.entity.appUser.AppUser;
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-import java.util.Map;
+import com.application.template.entity.appUser.AppUser;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 @Mapper
 @Repository

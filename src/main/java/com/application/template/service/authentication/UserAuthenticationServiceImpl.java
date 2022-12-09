@@ -35,6 +35,7 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService 
     public void getCaptchaCode(Integer captchaKeyPrefixIndex, String receivingId) {
         CaptchaKeyPrefix prefix = CaptchaKeyPrefix.getCaptchaKeyPrefixByIndex(captchaKeyPrefixIndex);
         String captchaKey = prefix.getPrefix() + receivingId;
+        logger.info("用户:{}正在获取验证码", receivingId);
         String captcha = String.valueOf(new Random().nextInt(999999) % (999999 - 100000 + 1) + 100000);
         MessageService messageService = MessageSendingServiceFactory.getMessageService(prefix.getMessageSendingApproach());
         messageService.sendCaptchaMessage(receivingId, genMessageTemplate(), captcha);
