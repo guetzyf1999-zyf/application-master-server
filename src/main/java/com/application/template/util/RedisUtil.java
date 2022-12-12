@@ -1,11 +1,11 @@
 package com.application.template.util;
 
+import java.util.concurrent.TimeUnit;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
-
-import java.util.concurrent.TimeUnit;
 
 @Component
 public class RedisUtil {
@@ -39,5 +39,9 @@ public class RedisUtil {
 
     public String getStr(String key) {
         return strRedisTemplate.opsForValue().get(key);
+    }
+
+    public void deleteStr(String key){
+        this.strRedisTemplate.delete(key);
     }
 }

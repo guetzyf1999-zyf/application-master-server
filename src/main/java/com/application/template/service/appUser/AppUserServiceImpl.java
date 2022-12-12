@@ -26,9 +26,9 @@ public class AppUserServiceImpl implements AppUserService {
 	private UserAuthenticationService authenticationService;
 
 	@Override
-	public AppUser register(RegisterBody registerBody) {
-		authenticationService.checkCaptchaCode(CaptchaKeyPrefix.REGISTER_BY_EMAIL.getPrefix() + registerBody.getEmail(),
-				registerBody.getCaptchaCode());
+	public AppUser register(RegisterBody registerBody, String captchaKey) {
+		CaptchaKeyPrefix prefix = CaptchaKeyPrefix.getCaptchaKeyPrefixByIndex(registerBody.getCaptchaKeyPrefix());
+		authenticationService.checkCaptchaCodeAndDelete(prefix.getPrefix() + captchaKey, registerBody.getCaptchaCode());
 		checkUserInfoLegal(registerBody);
 		AppUser user = new AppUser(registerBody);
 		userMapper.insert(user);

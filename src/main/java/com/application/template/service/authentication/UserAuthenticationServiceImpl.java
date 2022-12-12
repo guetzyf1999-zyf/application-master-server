@@ -4,13 +4,13 @@ import java.util.Random;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import com.application.template.aspectJ.annotation.TimeCount;
 import com.application.template.enumtype.CaptchaKeyPrefix;
+import com.application.template.enumtype.MessageSendingApproach;
 import com.application.template.exceptionHandle.AppAssert;
 import com.application.template.exceptionHandle.exception.AppException;
 import com.application.template.factory.MessageSendingServiceFactory;
@@ -24,21 +24,16 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService 
 
     private static final Logger logger = LoggerFactory.getLogger(UserAuthenticationServiceImpl.class);
 
-    @Value("${captcha.effectivetime}")
-    private long effectiveTime;
-
-    @Value("${captcha.messagetemplate}")
-    private String messageTemplate;
-
     @Override
     @TimeCount(name = "getCaptchaCode")
     public void getCaptchaCode(Integer captchaKeyPrefixIndex, String receivingId) {
         CaptchaKeyPrefix prefix = CaptchaKeyPrefix.getCaptchaKeyPrefixByIndex(captchaKeyPrefixIndex);
         String captchaKey = prefix.getPrefix() + receivingId;
-        logger.info("用户:{}正在获取验证码", receivingId);
         String captcha = String.valueOf(new Random().nextInt(999999) % (999999 - 100000 + 1) + 100000);
-        MessageService messageService = MessageSendingServiceFactory.getMessageService(prefix.getMessageSendingApproach());
-        messageService.sendCaptchaMessage(receivingId, genMessageTemplate(), captcha);
+        MessageSendingApproach sendingApproach = prefix.getMessageSendingApproach();
+        MessageService messageService = MessageSendingServiceFactory.getMessageService(sendingApproach);
+        messageService.sendCaptchaMessage(receivingId, prefix.getDescribe(), captcha);
+        logger.info("用户:{}--获取验证码:{}--有效时长:{}分钟",receivingId, captcha, prefix.getTimeout());
         SpringUtil.getBean(RedisUtil.class).insertStr(captchaKey, captcha, prefix.getTimeout(), prefix.getUnit());
     }
 
@@ -49,8 +44,14 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService 
         AppAssert.judge(!captcha.equals(captchaCode), new AppException("验证码错误!"));
     }
 
-    private String genMessageTemplate() {
-        long minutes = effectiveTime / 1000;
-        return messageTemplate + minutes + "秒: ";
+    @Override
+    public void checkCaptchaCodeAndDelete(String captchaKey, String captcha) {
+        checkCaptchaCode(captchaKey, captcha);
+        deleteCaptchaCode(captchaKey);
+    }
+
+    @Override
+    public void deleteCaptchaCode(String captchaKey) {
+        SpringUtil.getBean(RedisUtil.class).deleteStr(captchaKey);
     }
 }

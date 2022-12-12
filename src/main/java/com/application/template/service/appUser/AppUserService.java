@@ -7,7 +7,7 @@ import com.application.template.entity.appUser.AppUser;
 
 public interface AppUserService extends UserDetailsService {
 
-    AppUser register(RegisterBody registerBody);
+    AppUser register(RegisterBody registerBody, String captchaKey);
 
     AppUser getUserByUsername(String username);
 

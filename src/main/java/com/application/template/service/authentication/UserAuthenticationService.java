@@ -6,4 +6,8 @@ public interface UserAuthenticationService {
 
 	void checkCaptchaCode(String captchaKey,String captcha);
 
+	void checkCaptchaCodeAndDelete(String captchaKey,String captcha);
+
+	void deleteCaptchaCode(String captchaKey);
+
 }

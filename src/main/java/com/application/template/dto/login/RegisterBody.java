@@ -10,6 +10,7 @@ public class RegisterBody {
     private String phoneNumberPrefix;
     private String phoneNumber;
     private String captchaCode;
+    private Integer captchaKeyPrefix;
 
     public RegisterBody() {
     }
@@ -60,5 +61,13 @@ public class RegisterBody {
 
     public void setCaptchaCode(String captchaCode) {
         this.captchaCode = captchaCode;
+    }
+
+    public Integer getCaptchaKeyPrefix() {
+        return captchaKeyPrefix;
+    }
+
+    public void setCaptchaKeyPrefix(Integer captchaKeyPrefix) {
+        this.captchaKeyPrefix = captchaKeyPrefix;
     }
 }

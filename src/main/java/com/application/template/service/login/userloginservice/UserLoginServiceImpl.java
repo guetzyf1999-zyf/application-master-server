@@ -34,7 +34,7 @@ public class UserLoginServiceImpl {
 	public JwtAuthResponseBody loginByCaptchaCode(LoginAuthBody loginAuthBody, LoginAuthWay loginAuthWay,
 			AppUser user) {
 		String captchaKey = loginAuthWay.getPrefix().getPrefix() + loginAuthBody.getVerifyId();
-		authenticationService.checkCaptchaCode(captchaKey, loginAuthBody.getVerifyCode());
+		authenticationService.checkCaptchaCodeAndDelete(captchaKey, loginAuthBody.getVerifyCode());
 		UsernamePasswordAuthenticationToken authenticate = new UsernamePasswordAuthenticationToken(user,
 				user.getPassword(), user.getAuthorities());
 		String jwtToken = signJwtTokenAndSetSecurityContext(user, authenticate);
