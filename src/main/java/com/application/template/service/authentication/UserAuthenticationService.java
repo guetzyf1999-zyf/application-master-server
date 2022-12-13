@@ -2,7 +2,7 @@ package com.application.template.service.authentication;
 
 public interface UserAuthenticationService {
 
-	void getCaptchaCode(Integer captchaKeyPrefixIndex, String receivingId);
+	void getCaptchaCode(String title, Integer captchaKeyPrefixIndex, String receivingId);
 
 	void checkCaptchaCode(String captchaKey,String captcha);
 

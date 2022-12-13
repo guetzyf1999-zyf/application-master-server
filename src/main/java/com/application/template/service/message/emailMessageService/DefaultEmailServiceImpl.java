@@ -21,7 +21,7 @@ public class DefaultEmailServiceImpl implements MessageService, InitializingBean
 
     @Override
     @TimeCount(name = "sendEmailCaptchaMessage")
-    public void sendCaptchaMessage(String email, String text, String captcha) {
+    public void sendCaptchaMessage(String title, String email, String text, String captcha) {
         AppAssert.judge(!StringUtils.hasText(email),new AppException("请先填写邮箱!"));
         EmailUtil.sendEmail("新用户注册验证码", text + captcha, email, myEmailAddress);
     }

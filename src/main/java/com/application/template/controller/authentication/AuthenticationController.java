@@ -16,7 +16,8 @@ public class AuthenticationController {
     private UserAuthenticationService authenticationService;
 
 	@GetMapping("get-captcha-code")
-	public void getCaptchaCode(@RequestParam String receivingId, @RequestParam Integer captchaKeyPrefixIndex) {
-		authenticationService.getCaptchaCode(captchaKeyPrefixIndex, receivingId);
+	public void getCaptchaCode(@RequestParam String title, @RequestParam String receivingId,
+			@RequestParam Integer captchaKeyPrefixIndex) {
+		authenticationService.getCaptchaCode(title, captchaKeyPrefixIndex, receivingId);
 	}
 }

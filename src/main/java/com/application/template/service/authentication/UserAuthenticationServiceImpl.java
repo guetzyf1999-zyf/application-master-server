@@ -26,13 +26,13 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService 
 
     @Override
     @TimeCount(name = "getCaptchaCode")
-    public void getCaptchaCode(Integer captchaKeyPrefixIndex, String receivingId) {
+    public void getCaptchaCode(String title, Integer captchaKeyPrefixIndex, String receivingId) {
         CaptchaKeyPrefix prefix = CaptchaKeyPrefix.getCaptchaKeyPrefixByIndex(captchaKeyPrefixIndex);
         String captchaKey = prefix.getPrefix() + receivingId;
         String captcha = String.valueOf(new Random().nextInt(999999) % (999999 - 100000 + 1) + 100000);
         MessageSendingApproach sendingApproach = prefix.getMessageSendingApproach();
         MessageService messageService = MessageSendingServiceFactory.getMessageService(sendingApproach);
-        messageService.sendCaptchaMessage(receivingId, prefix.getDescribe(), captcha);
+        messageService.sendCaptchaMessage(title, receivingId, prefix.getDescribe(), captcha);
         logger.info("用户:{}--获取验证码:{}--有效时长:{}分钟",receivingId, captcha, prefix.getTimeout());
         SpringUtil.getBean(RedisUtil.class).insertStr(captchaKey, captcha, prefix.getTimeout(), prefix.getUnit());
     }

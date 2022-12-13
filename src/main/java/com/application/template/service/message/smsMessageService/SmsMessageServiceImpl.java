@@ -31,13 +31,13 @@ public class SmsMessageServiceImpl implements MessageService, InitializingBean {
 
     @Override
     @TimeCount(name = "sendSMSCaptchaMessage")
-    public void sendCaptchaMessage(String phone, String smsText, String captcha) {
+    public void sendCaptchaMessage(String title, String phone, String smsText, String captcha) {
         AppAssert.judge(!StringUtils.hasText(phone),new AppException("请先填写电话!"));
         Map<String, Object> params = new HashMap<>();
         params.put("Key", smsMessageConfigProps.getKey());
         params.put("Uid", smsMessageConfigProps.getUid());
         params.put("smsMob", phone);
-        params.put("smsText", smsText + captcha);
+        params.put("smsText", title + ":" + smsText + captcha);
         String response = HttpUtil.httpGetWithParams(ExternalServiceAddress.SMS_MESSAGE_HOST, params);
         int responseCode = Integer.parseInt(response);
         logger.error(SmsExceptionType.getSmsExceptionTypeByIndex(responseCode).getMessage());
