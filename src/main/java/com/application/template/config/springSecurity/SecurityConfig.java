@@ -27,8 +27,8 @@ import com.application.template.service.appUser.AppUserService;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
 
-    private static final String[] DISABLE_AUTH = new String[]{"/app/login/**" ,"/app/test/**", "/app/user/register",
-            "/app/authentication/get-captcha-code/**"};
+	private static final String[] DISABLE_AUTH = new String[] { "/app/login/**", "/app/test/**", "/app/user/register",
+			"/app/user/reset-password", "/app/authentication/get-captcha-code/**" };
 
     @Autowired
     private AppUserService appUserService;

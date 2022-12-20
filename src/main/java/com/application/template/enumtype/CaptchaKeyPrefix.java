@@ -20,7 +20,17 @@ public enum CaptchaKeyPrefix {
 	 * 邮箱注册验证码前缀
 	 */
 	REGISTER_BY_EMAIL("register--", 30, 1, TimeUnit.MINUTES, MessageSendingApproach.EMAIL,
-			"您本次的注册登录验证码有效时长为1分钟,请尽快验证,验证码为");
+			"您本次的注册登录验证码有效时长为1分钟,请尽快验证,验证码为"),
+	/*
+	 * 邮箱注册验证码前缀
+	 */
+	RESET_PASSWORD_BY_PHONE("reset_password_by_phone--", 40, 10, TimeUnit.MINUTES, MessageSendingApproach.SMS,
+			"您本次重置密码验证码有效时长为10分钟,请尽快验证,验证码为"),
+	/*
+	 * 邮箱注册验证码前缀
+	 */
+	RESET_PASSWORD_BY_EMAIL("reset_password_by_email--", 50, 10, TimeUnit.MINUTES, MessageSendingApproach.EMAIL,
+			"您本次重置密码验证码有效时长为10分钟,请尽快验证,验证码为");
 
 	private final String prefix;
 	private final Integer index;

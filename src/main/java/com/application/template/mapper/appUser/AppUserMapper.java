@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Repository;
 
 import com.application.template.entity.appUser.AppUser;
@@ -42,4 +43,7 @@ public interface AppUserMapper extends BaseMapper<AppUser> {
 
     @Select(value = "select * from app_user where username like #{username} and nick_name like #{nickName}")
     List<AppUser> findAppUserByParams(Map<String,String> params);
+
+    @Update(value = "update app_user set password = #{newPassword} where id = #{id}")
+    void resetPassword(String newPassword, Integer id);
 }

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import com.application.template.dto.auth.ResetPasswordParamsDTO;
 import com.application.template.dto.login.RegisterBody;
 import com.application.template.entity.appUser.AppUser;
 import com.application.template.enumtype.CaptchaKeyPrefix;
@@ -55,6 +56,16 @@ public class AppUserServiceImpl implements AppUserService {
 	@Override
 	public String getEmailByUsername(String username) {
 		return userMapper.findEmailByUsername(username);
+	}
+
+	@Override
+	public void resetPassword(ResetPasswordParamsDTO paramsDTO) {
+		CaptchaKeyPrefix prefix = CaptchaKeyPrefix.getCaptchaKeyPrefixByIndex(paramsDTO.getCaptchaPrefix());
+		authenticationService.checkCaptchaCodeAndDelete(prefix.getPrefix() + paramsDTO.getReceivingId(),
+				paramsDTO.getCaptchaCode());
+		AppUser user = (AppUser) loadUserByUsername(paramsDTO.getReceivingId());
+		String newPassword = paramsDTO.genSaltForNewPassword();
+		userMapper.resetPassword(newPassword, user.getId());
 	}
 
 	private void checkUserInfoLegal(RegisterBody registerBody) {

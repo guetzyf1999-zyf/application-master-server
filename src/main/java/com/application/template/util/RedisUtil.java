@@ -21,7 +21,7 @@ public class RedisUtil {
         objRedisTemplate.opsForValue().set(key, value);
     }
 
-    public void insert(String key,Object value, long timout, TimeUnit unit) {
+    public void insertIfAbsent(String key,Object value, long timout, TimeUnit unit) {
         objRedisTemplate.opsForValue().setIfAbsent(key, value, timout, unit);
     }
 
@@ -29,8 +29,12 @@ public class RedisUtil {
         strRedisTemplate.opsForValue().set(key, value);
     }
 
-    public void insertStr(String key,String value, long timout, TimeUnit unit) {
+    public void insertStrIfAbsent(String key, String value, long timout, TimeUnit unit) {
         strRedisTemplate.opsForValue().setIfAbsent(key, value, timout, unit);
+    }
+
+    public void insertStr(String key, String value, long timout, TimeUnit unit) {
+        strRedisTemplate.opsForValue().set(key, value, timout, unit);
     }
 
     public Object get(String key) {
